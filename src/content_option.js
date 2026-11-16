@@ -149,8 +149,8 @@ const dataportfolio = products.map((p) => ({
     link: p.link,
 }));
 
-// Backend API configuration for Contact & Tickets (Microservice on port 8082)
-const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8082";
+// Backend API configuration for Contact & Tickets (Microservice deployed on Render)
+const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_URL || "https://go-seek-backend.onrender.com";
 
 const contactConfig = {
     YOUR_EMAIL: "srikanthy12866@gmail.com",
