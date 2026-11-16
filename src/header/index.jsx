@@ -26,8 +26,18 @@ const Headermain = () => {
     try {
       const response = await fetch(backendResumeUrl);
       if (!response.ok) throw new Error('Failed to retrieve resume from backend service');
+      
+      // Dynamically extract filename provided by backend folder location
+      let filename = 'Srikanth_Yepalagunta_Resume.pdf';
+      const disposition = response.headers.get('content-disposition');
+      if (disposition && disposition.includes('filename=')) {
+        const match = disposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+        if (match && match[1]) {
+          filename = match[1].replace(/['"]/g, '').trim();
+        }
+      }
+
       const blob = await response.blob();
-      const filename = 'Yepalagunta_Srikanth_Resume.pdf';
       const blobUrl = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = blobUrl;

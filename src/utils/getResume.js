@@ -21,9 +21,24 @@ export async function fetchResumeBlob() {
   return response.blob();
 }
 
-export async function triggerResumeDownload(filename = 'Yepalagunta_Srikanth_Resume.pdf') {
+export async function triggerResumeDownload(defaultFilename = 'Srikanth_Yepalagunta_Resume.pdf') {
   try {
-    const blob = await fetchResumeBlob();
+    const url = getResumeDownloadUrl();
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Failed to fetch resume from backend: ${response.status} ${response.statusText}`);
+    }
+
+    let filename = defaultFilename;
+    const disposition = response.headers.get('content-disposition');
+    if (disposition && disposition.includes('filename=')) {
+      const match = disposition.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+      if (match && match[1]) {
+        filename = match[1].replace(/['"]/g, '').trim();
+      }
+    }
+
+    const blob = await response.blob();
     const blobUrl = window.URL.createObjectURL(blob);
     const link = document.createElement('a');
     link.href = blobUrl;
