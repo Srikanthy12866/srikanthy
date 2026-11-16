@@ -232,3 +232,140 @@ section {
 .intro_sec .h_bg-image {
     filter: saturate(0.5);
 }
+
+
+/* --- Multi-Agentic Development Hero Enhancements --- */
+
+.agentic-badge {
+    display: inline-flex;
+    align-items: center;
+    background: rgba(37, 99, 235, 0.12);
+    border: 1px solid rgba(37, 99, 235, 0.35);
+    color: #60a5fa;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1.2px;
+    padding: 6px 14px;
+    border-radius: 20px;
+}
+
+.intro-name {
+    font-size: 2.2rem;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+    color: var(--text-color);
+}
+
+.typewriter-wrapper {
+    font-size: 1.6rem;
+    font-weight: 600;
+    min-height: 48px;
+    color: var(--secondary-color);
+}
+
+.intro-desc {
+    font-size: 1.05rem;
+    line-height: 1.7;
+    color: var(--text-color);
+    opacity: 0.88;
+}
+
+.agentic-highlights-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.highlight-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    background: rgba(128, 128, 128, 0.08);
+    border: 1px solid rgba(128, 128, 128, 0.2);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text-color);
+}
+
+.highlight-icon {
+    color: #3b82f6;
+    font-size: 0.95rem;
+}
+
+.ticket-link-btn {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 12px;
+    padding: 8px 16px;
+    background: rgba(245, 158, 11, 0.12);
+    border: 1px solid rgba(245, 158, 11, 0.35);
+    color: #f59e0b;
+    border-radius: 4px;
+    font-size: 0.86rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.25s ease;
+}
+
+.ticket-link-btn:hover {
+    background: #f59e0b;
+    color: #000;
+    text-decoration: none;
+    box-shadow: 0 4px 12px rgba(245, 158, 11, 0.3);
+}
+
+/* Floating status chip on hero image */
+.agentic-status-chip {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    background: rgba(17, 24, 39, 0.85);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(59, 130, 246, 0.4);
+    border-radius: 10px;
+    padding: 12px 18px;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+    animation: fadeInChip 0.5s ease-out;
+}
+
+@keyframes fadeInChip {
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.agentic-pulse-dot {
+    width: 8px;
+    height: 8px;
+    background: #10b981;
+    border-radius: 50%;
+    display: inline-block;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+    margin-bottom: 6px;
+}
+
+.agentic-chip-title {
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: #ffffff;
+}
+
+.agentic-chip-sub {
+    font-size: 0.74rem;
+    color: #9ca3af;
+}
+
+@media (max-width: 991.98px) {
+    .agentic-status-chip {
+        display: none;
+    }
+    .intro-name {
+        font-size: 1.8rem;
+    }
+    .typewriter-wrapper {
+        font-size: 1.3rem;
+    }
+}

@@ -1,24 +1,34 @@
 const logotext = "Srikanth";
 const meta = {
-    title: "Yepalagunta Srikanth",
-    description: "I’m Yepalagunta Srikanth Full stack developer,currently working in Bengaluru. I love to create simple yet beautiful websites with great user experience.",
+    title: "Yepalagunta Srikanth | Full-Stack & Multi-Agentic Systems Engineer",
+    description: "Software Engineer specializing in Multi-Agentic AI Architecture, Spring Boot Microservices, and Modern React Systems. Building high-performance, resilient distributed software.",
 };
 
 const introdata = {
     title: "I’m Yepalagunta Srikanth",
+    subtitle: "Software Engineer & Multi-Agentic Systems Architect",
     animated: {
-        first: "I love coding",
-        second: "I develop web apps",
-        third: "I design cool websites",
+        first: "Multi-Agentic System Developer",
+        second: "Spring Boot Microservices Architect",
+        third: "Distributed Systems & REST APIs",
+        fourth: "Autonomous AI Workflows & Tool-Use",
+        fifth: "High-Performance React Architectures",
     },
-    description: "Passionate full-stack developer with expertise in creating dynamic web applications and mobile apps. Let's build something amazing together.",
+    description: "Engineering scalable Spring Boot microservices, autonomous multi-agentic AI workflows, and high-performance React applications. Experienced in Warehouse Management Systems (WMS), Linux kernel sysfs telemetry, and resilient cloud architectures.",
     your_img_url: "https://images.unsplash.com/photo-1514790193030-c89d266d5a9d",
+    highlights: [
+        { label: "Core Focus", val: "Multi-Agentic & Microservices" },
+        { label: "Backend", val: "Spring Boot 3, Java 17, MySQL" },
+        { label: "Frontend", val: "React.js, Redux, Electron" },
+        { label: "Domains", val: "WMS, Host Telemetry, Autonomous AI" },
+    ]
 };
 
 const dataabout = {
     title: "a bit about myself",
-    aboutme: "Software Engineer with experience in Warehouse Management Systems (WMS), Inventory & Order Management. Skilled in building microservices and RESTful APIs with Java and Spring Boot, and responsive frontends using React.js and Redux. Experienced in database design with MySQL and applying best practices across the SDLC.",
+    aboutme: "Software Engineer with deep experience in Warehouse Management Systems (WMS), Inventory & Order Management, and Autonomous Multi-Agentic AI systems. Skilled in architecting microservices and RESTful APIs with Java and Spring Boot, and responsive frontends using React.js and Redux. Passionate about distributed computing, database optimization with MySQL, and building reliable systems across the SDLC.",
 };
+
 const worktimeline = [
     {
         jobtitle: "Software Engineer",
@@ -33,113 +43,97 @@ const worktimeline = [
 ];
 
 const skills = [
-    { name: "Microservices", value: 0 },
-    { name: "Java", value: 0 },
-    { name: "JavaScript (ES6+)", value: 0 },
-    { name: "SQL", value: 0 },
-    { name: "HTML5", value: 0 },
-    { name: "CSS3", value: 0 },
-    { name: "Spring Boot", value: 0 },
-    { name: "Spring Security", value: 0 },
-    { name: "Spring Data JPA", value: 0 },
-    { name: "Hibernate", value: 0 },
-    { name: "RESTful APIs", value: 0 },
-    { name: "Microservices", value: 0 },
-    { name: "React.js", value: 0 },
-    { name: "Redux", value: 0 },
-    { name: "Bootstrap", value: 0 },
-    { name: "Material UI", value: 0 },
-    { name: "Axios", value: 0 },
-    { name: "MySQL", value: 0 },
-    { name: "Git", value: 0 },
-    { name: "GitHub", value: 0 },
-    { name: "Maven", value: 0 },
-    { name: "IntelliJ IDEA", value: 0 },
-    { name: "VS Code", value: 0 },
-    { name: "WMS (Warehouse Management Systems)", value: 0 },
-    { name: "Inventory & Order Management", value: 0 },
-    { name: "SDLC", value: 0 },
+    { name: "Multi-Agentic AI Systems", value: 95 },
+    { name: "Microservices", value: 90 },
+    { name: "Java 17", value: 92 },
+    { name: "Spring Boot", value: 90 },
+    { name: "Spring Security & JWT", value: 88 },
+    { name: "Spring Data JPA", value: 88 },
+    { name: "RESTful APIs", value: 95 },
+    { name: "MySQL & Database Optimization", value: 85 },
+    { name: "React.js", value: 90 },
+    { name: "Redux", value: 82 },
+    { name: "JavaScript (ES6+)", value: 90 },
+    { name: "Electron & Linux sysfs", value: 85 },
+    { name: "WMS (Warehouse Management Systems)", value: 92 },
+    { name: "Inventory & Order Management", value: 90 },
+    { name: "Docker & Containerization", value: 80 },
+    { name: "Git & CI/CD", value: 85 },
 ];
 
-// Grouped skills for compact display
 const skillGroups = {
-    Core: ["Microservices", "Java", "JavaScript (ES6+)", "React.js", "Spring Boot", "SQL", "Git"],
-    Backend: ["Spring Security", "Spring Data JPA", "Hibernate", "RESTful APIs", "Microservices"],
-    Frontend: ["Redux", "Bootstrap", "Material UI", "Axios", "HTML5", "CSS3"],
-    Tools: ["MySQL", "Maven", "IntelliJ IDEA", "VS Code", "GitHub"],
-    Domains: ["WMS (Warehouse Management Systems)", "Inventory & Order Management", "SDLC"],
+    Core: ["Multi-Agentic AI", "Microservices", "Java", "Spring Boot", "React.js", "SQL", "Git"],
+    Backend: ["Spring Boot 3", "Spring Security (JWT)", "Spring Data JPA", "Hibernate", "RESTful APIs", "Microservices Architecture"],
+    Frontend: ["React.js", "Redux", "Bootstrap", "Material UI", "Electron IPC", "HTML5 & CSS3"],
+    DatabaseAndCloud: ["MySQL", "Docker", "Clever Cloud", "TiDB Cloud", "Supabase"],
+    Tools: ["Maven", "IntelliJ IDEA", "VS Code", "GitHub Actions", "Postman"],
+    Domains: ["Warehouse Management Systems (WMS)", "Inventory & Order Logistics", "Host Diagnostics Telemetry", "SDLC"],
 };
 
 const services = [
     {
-        title: "Microservices Architecture",
+        title: "Multi-Agentic AI & Autonomous Workflows",
         description:
-            "Design and implement microservices-based systems using Java and Spring Boot, including service decomposition, inter-service communication patterns, and resilience.",
+            "Design and build autonomous multi-agentic architectures with specialized agent roles, inter-agent coordination, tool execution pipelines, and automated self-healing workflows.",
     },
     {
-        title: "Backend Development",
+        title: "Microservices & Distributed Architecture",
         description:
-            "Build robust RESTful APIs and backend services with Spring Boot, Spring Security, Spring Data JPA and Hibernate; focus on scalability, security, and maintainability.",
+            "Architect and implement decoupled microservices using Java and Spring Boot, including stateless JWT security, inter-service communication, and independent database models.",
     },
     {
-        title: "Frontend Development",
+        title: "Robust Backend & REST APIs",
         description:
-            "Develop performant, responsive single-page applications using React.js, Redux, Bootstrap/Material UI and Axios for API integration.",
+            "Build robust, production-ready RESTful APIs with Spring Boot, Spring Security, Spring Data JPA, and Hibernate, optimized for high throughput and security.",
     },
     {
-        title: "WMS & Inventory Solutions",
+        title: "Modern Responsive Frontends",
         description:
-            "Implement warehouse management features (receiving, put-away, picking, packing, shipping) and integrate inventory/order workflows with existing systems.",
+            "Develop single-page applications and desktop tools with React.js, Redux, and Electron, featuring responsive mobile-first layouts, accessible UI, and real-time state sync.",
+    },
+    {
+        title: "WMS & Supply Chain Solutions",
+        description:
+            "Engineer end-to-end warehouse management workflows including inventory receiving, put-away, wave picking, packing, shipping, and order dispatching.",
     },
     {
         title: "Database Design & Optimization",
         description:
-            "Design relational schemas, optimize MySQL queries and indexing strategies, and improve data access performance with Spring Data JPA.",
-    },
-    {
-        title: "DevOps & CI/CD",
-        description:
-            "Automate builds and deployments using Maven and CI/CD pipelines; provide basic containerization and deployment guidance.",
-    },
-    {
-        title: "Consulting & SDLC Support",
-        description:
-            "Requirements analysis, architecture reviews, code reviews, and agile delivery support to help teams ship reliable software.",
+            "Design relational schemas, optimize indexing strategies and complex queries with MySQL, and manage automated schema evolutions across microservice databases.",
     },
 ];
 
 const products = [
     {
-        id: "deep-hardware-seeker",
+        id: "go-seeker",
         title: "Go Seeker",
         tagline: "Deep Hardware Diagnostic & Real-Time Host Telemetry Suite for Ubuntu / Linux",
         category: "Ubuntu & System Diagnostics",
         badge: "Ubuntu / Linux Native",
-        status: "Open Source / Production",
+        status: "Production Ready",
         img: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=1200&q=80",
-        description: "An advanced desktop hardware diagnostic and real-time host inspection tool engineered specifically for Ubuntu and Linux. Directly reads true hardware telemetry from the local host by querying Linux kernel sysfs (/sys), native OS drivers, firmware interfaces, and system APIs—delivering accurate per-core CPU clock speeds, memory module layouts, GPU controllers, baseboard, and BIOS specifications with zero browser-level approximations.",
+        description: "An advanced desktop hardware diagnostic and real-time host inspection tool engineered specifically for Ubuntu and Linux. Directly reads authentic hardware telemetry from the host by querying Linux kernel sysfs (/sys), native OS drivers, and system interfaces—delivering per-core CPU clock speeds, memory module topologies, GPU controllers, motherboard, and BIOS specifications with zero browser-level approximations.",
         architecture: "Sandboxed Electron IPC bridge architecture (nodeIntegration: false, contextIsolation: true) exposing a secure read-only window.deviceHardware.getSnapshot() contract. Gathers authentic host metrics via systeminformation and kernel sysfs on Linux, paired with a React interface running a 1-second real-time telemetry polling loop.",
         techStack: [
             "Ubuntu",
-            "Linux",
+            "Linux Kernel",
             "Electron",
             "React.js",
             "systeminformation",
             "Node.js",
-            "Kernel sysfs",
-            "IPC Architecture",
+            "IPC Bridge",
         ],
         features: [
             "Deep hardware inspection via Linux kernel sysfs (/sys) & native OS interfaces",
-            "Real-time 1-second telemetry polling for per-core CPU clock speeds and memory usage",
+            "Real-time 1-second telemetry polling for per-core CPU clock frequencies and memory load",
             "Granular memory module layout, RAM timings, and DIMM slot topology",
             "Motherboard, BIOS version, GPU graphics controllers, and OS build telemetry",
             "Packaged for Ubuntu (DEB & AppImage) and Linux ARM64 (Raspberry Pi)",
             "Strict zero-guesswork design: reports authentic host metrics without fabricated fallbacks",
             "Exportable hardware snapshot reports for system benchmarking & audit compliance",
         ],
-        link: "https://github.com/Srikanthy12866/DEEP_HARDWARE_SEEKER",
-        github: "https://github.com/Srikanthy12866/DEEP_HARDWARE_SEEKER",
+        link: "https://github.com/Srikanthy12866/Go-Seek",
+        github: "https://github.com/Srikanthy12866/Go-Seek",
         stats: {
             targetOS: "Ubuntu (DEB / AppImage)",
             telemetry: "1s Real-Time Polling",
@@ -155,14 +149,14 @@ const dataportfolio = products.map((p) => ({
     link: p.link,
 }));
 
+// Backend API configuration for Contact & Tickets (Microservice on port 8082)
+const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_URL || "http://localhost:8082";
+
 const contactConfig = {
     YOUR_EMAIL: "srikanthy12866@gmail.com",
-    description: "Feel free to reach out for collaborations, projects, or just to say hello! I'm always excited to discuss new opportunities and ideas.",
-    // creat an emailjs.com account 
-    // check out this tutorial https://www.emailjs.com/docs/examples/reactjs/
-    YOUR_SERVICE_ID: "service_97daj3d",
-    YOUR_TEMPLATE_ID: "template_lfinicu",
-    YOUR_USER_ID: "RJ9FjqHZA0HsapsnE",
+    description: "Feel free to reach out for collaborations, architecture discussions, or enterprise projects. Powered directly by our secure Spring Boot backend microservice.",
+    apiEndpoint: `${BACKEND_BASE_URL}/api/contact`,
+    ticketEndpoint: `${BACKEND_BASE_URL}/api/tickets`,
 };
 
 const socialprofils = {
@@ -171,8 +165,10 @@ const socialprofils = {
     linkedin: "https://www.linkedin.com/in/sri12866/",
     instagram: "https://www.instagram.com/sri.12866/"
 };
-// Resume URL from environment variable (Google Drive file ID)
-const resume = import.meta.env.VITE_RESUME_URL || "";
+
+// Resume URL routed securely through backend proxy (Goal 5: no exposed API keys)
+const resume = `${BACKEND_BASE_URL}/api/resume/download`;
+
 export {
     meta,
     dataabout,
@@ -187,4 +183,5 @@ export {
     logotext,
     resume,
     skillGroups,
+    BACKEND_BASE_URL,
 };

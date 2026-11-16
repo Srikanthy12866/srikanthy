@@ -14,9 +14,8 @@ import {
   FiActivity,
   FiX,
   FiDownload,
-  FiAlertTriangle,
-  FiFileText,
   FiTerminal,
+  FiInfo,
 } from "react-icons/fi";
 import { SiUbuntu, SiDebian, SiLinux } from "react-icons/si";
 import { UbuntuDownloadCenter } from "../../components/UbuntuDownloadCenter/UbuntuDownloadCenter";
@@ -30,67 +29,35 @@ export const detectClientOS = () => {
   const userAgent = window.navigator.userAgent || "";
   const platform = window.navigator.platform || "";
 
-  // 1. Android
   if (/Android/i.test(userAgent)) {
     return { name: "Android", isUbuntu: false, isLinuxFamily: false };
   }
-
-  // 2. iOS
-  if (
-    /iPad|iPhone|iPod/.test(userAgent) ||
-    (platform === "MacIntel" && window.navigator.maxTouchPoints > 1)
-  ) {
+  if (/iPad|iPhone|iPod/.test(userAgent) || (platform === "MacIntel" && window.navigator.maxTouchPoints > 1)) {
     return { name: "iOS", isUbuntu: false, isLinuxFamily: false };
   }
-
-  // 3. macOS
-  if (
-    /Macintosh|MacIntel|MacPPC|Mac68K/i.test(platform) ||
-    /Mac OS X/i.test(userAgent)
-  ) {
+  if (/Macintosh|MacIntel|MacPPC|Mac68K/i.test(platform) || /Mac OS X/i.test(userAgent)) {
     return { name: "macOS", isUbuntu: false, isLinuxFamily: false };
   }
-
-  // 4. Windows
-  if (
-    /Win32|Win64|Windows|WinCE/i.test(platform) ||
-    /Windows NT|Win64|WOW64/i.test(userAgent)
-  ) {
+  if (/Win32|Win64|Windows|WinCE/i.test(platform) || /Windows NT|Win64|WOW64/i.test(userAgent)) {
     let winVer = "Windows";
     if (/Windows NT 10.0/i.test(userAgent)) winVer = "Windows 10/11";
-    else if (/Windows NT 6.3/i.test(userAgent)) winVer = "Windows 8.1";
-    else if (/Windows NT 6.1/i.test(userAgent)) winVer = "Windows 7";
     return { name: winVer, isUbuntu: false, isLinuxFamily: false };
   }
-
-  // 5. Linux Family (Ubuntu, Debian, Fedora, Arch, CentOS, generic Linux, X11)
-  if (
-    /Linux|X11/i.test(platform) ||
-    /Linux|X11|Ubuntu|Debian|Fedora|CentOS|RedHat/i.test(userAgent)
-  ) {
+  if (/Linux|X11/i.test(platform) || /Linux|X11|Ubuntu|Debian|Fedora|CentOS|RedHat/i.test(userAgent)) {
     const isUbuntuExplicit = /Ubuntu/i.test(userAgent) || /Ubuntu/i.test(platform);
-    let linuxDistro = "Ubuntu Linux";
-    if (isUbuntuExplicit) linuxDistro = "Ubuntu Linux";
-    else if (/Debian/i.test(userAgent)) linuxDistro = "Debian Linux";
-    else if (/Fedora/i.test(userAgent)) linuxDistro = "Fedora Linux";
-    else if (/Arch/i.test(userAgent)) linuxDistro = "Arch Linux";
-    else linuxDistro = "Linux (Ubuntu Compatible)";
-
     return {
-      name: linuxDistro,
-      isUbuntu: isUbuntuExplicit || linuxDistro.includes("Ubuntu") || true,
+      name: isUbuntuExplicit ? "Ubuntu Linux" : "Linux (Ubuntu Compatible)",
+      isUbuntu: true,
       isLinuxFamily: true,
     };
   }
-
   return { name: "Unknown OS", isUbuntu: false, isLinuxFamily: false };
 };
 
 // Generate comprehensive Ubuntu / Linux User Guide
 const generateUserGuide = (product) => {
   const prodTitle = product?.title || "Go Seeker";
-  const repoUrl =
-    product?.github || "https://github.com/Srikanthy12866/DEEP_HARDWARE_SEEKER";
+  const repoUrl = product?.github || "https://github.com/Srikanthy12866/Go-Seek";
 
   return `================================================================================
                     ${prodTitle.toUpperCase()} - USER GUIDE & QUICK START
@@ -107,60 +74,19 @@ Runtime:    Node.js (>= 18.x), Electron, React
 - Operating System: Ubuntu, Debian, Fedora, Arch Linux (x86_64 or ARM64)
 - Linux Kernel: 5.x or 6.x with readable /sys/devices and /proc interfaces
 - Node.js & npm: Node.js 18 or newer recommended
-- Build Tools: build-essential (gcc, g++, make)
 
 Install dependencies on Ubuntu/Debian:
   $ sudo apt update
   $ sudo apt install -y curl git build-essential
 
 --------------------------------------------------------------------------------
-2. INSTALLATION & SETUP
---------------------------------------------------------------------------------
-Step 1: Extract the downloaded archive or clone the repository:
-  $ git clone ${repoUrl}.git
-  $ cd DEEP_HARDWARE_SEEKER
-
-Step 2: Install project dependencies:
-  $ npm install
-
---------------------------------------------------------------------------------
-3. RUNNING THE APPLICATION
+2. RUNNING THE APPLICATION
 --------------------------------------------------------------------------------
 Option A: Full Desktop Mode (Electron with real-time kernel telemetry):
   $ npm run desktop
-  This starts the React UI and opens the native Electron window. It queries
-  CPU per-core clock frequencies, cache topologies, memory DIMM modules,
-  GPU controllers, and baseboard specs once every second.
 
-Option B: Browser Development Preview:
-  $ npm start
-  Opens http://localhost:3000. Note: Browser-only mode cannot read low-level
-  kernel /sys paths and will indicate that firmware and core details require
-  the desktop Electron bridge.
-
---------------------------------------------------------------------------------
-4. BUILDING STANDALONE UBUNTU PACKAGES (.deb / .AppImage)
---------------------------------------------------------------------------------
-To package ${prodTitle} as a standalone native Ubuntu application:
-  $ npm run desktop:build
-
-Output packages will be generated in dist/:
-  - .deb package: Install with:
-      $ sudo dpkg -i dist/*.deb
-  - .AppImage: Run directly with:
-      $ chmod +x dist/*.AppImage && ./dist/*.AppImage
-
-For Raspberry Pi / ARM64 Linux:
-  $ npm run desktop:linux-arm64
-
---------------------------------------------------------------------------------
-5. PERMISSIONS & KERNEL METRICS
---------------------------------------------------------------------------------
-${prodTitle} reads hardware metrics directly from local host interfaces:
-  - CPU Clock / Frequency: /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq
-  - Memory & DIMMs: dmidecode / sysfs memory interfaces
-  - Battery / Thermal: /sys/class/power_supply and /sys/class/thermal
-No root privileges are required for standard monitoring.
+Option B: Standalone Package Installation:
+  $ sudo dpkg -i Go-Seek-0.1.0-amd64.deb
 
 ================================================================================
 Generated for: Srikanth Yepalagunta - ${prodTitle} Project
@@ -185,21 +111,19 @@ export const Products = () => {
   const [selectedCategory, setSelectedCategory] = useState("All");
   const [searchQuery, setSearchQuery] = useState("");
   const [activeProduct, setActiveProduct] = useState(null);
+  const [modalTab, setModalTab] = useState("overview"); // "overview" | "downloads" | "architecture"
 
-  // Client OS Detection State
   const [detectedOS, setDetectedOS] = useState(() => detectClientOS());
 
   useEffect(() => {
     setDetectedOS(detectClientOS());
   }, []);
 
-  // Extract unique categories
   const categories = useMemo(() => {
     const cats = new Set(products.map((p) => p.category));
     return ["All", ...Array.from(cats)];
   }, []);
 
-  // Filter products based on search query and category
   const filteredProducts = useMemo(() => {
     return products.filter((product) => {
       const matchesCategory =
@@ -217,26 +141,17 @@ export const Products = () => {
     });
   }, [selectedCategory, searchQuery]);
 
-  // Open product modal
-  const handleOpenProduct = (product, focusDownload = false) => {
+  const handleOpenProduct = (product, initialTab = "overview") => {
     setActiveProduct(product);
-    if (focusDownload) {
-      setTimeout(() => {
-        const el = document.getElementById("ubuntu-download-center");
-        if (el) el.scrollIntoView({ behavior: "smooth" });
-      }, 180);
-    }
+    setModalTab(initialTab);
   };
 
-  // OS Verification & Download Handler: opens Ubuntu Download Center on the website
   const handleDownload = (product = activeProduct) => {
     if (!product) return;
-    const os = detectClientOS();
-    setDetectedOS(os);
-    handleOpenProduct(product, true);
+    setDetectedOS(detectClientOS());
+    handleOpenProduct(product, "downloads");
   };
 
-  // Handle ESC key for modal
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
@@ -263,14 +178,14 @@ export const Products = () => {
               {t("products_title")}
             </h1>
             <p className="products-subtitle text-muted">
-              {t("products_subtitle")}
+              Explore engineered applications, real-time Linux diagnostic suites, and distributed software systems.
             </p>
             <hr className="t_border my-4 ml-0 text-left" />
           </Col>
         </Row>
 
         {/* Search & Filter Toolbar */}
-        <div className="products-toolbar mb-5">
+        <div className="products-toolbar mb-4">
           <div className="products-search-wrapper mb-3 mb-md-0">
             <FiSearch className="search-icon" />
             <input
@@ -344,16 +259,15 @@ export const Products = () => {
                 <div
                   key={product.id}
                   className={`product-card ${isSingle ? "featured-single" : ""}`}
-                  onClick={() => handleOpenProduct(product)}
+                  onClick={() => handleOpenProduct(product, "overview")}
                   role="button"
                   tabIndex={0}
                   onKeyDown={(e) => {
                     if (e.key === "Enter" || e.key === " ") {
-                      handleOpenProduct(product);
+                      handleOpenProduct(product, "overview");
                     }
                   }}
                 >
-                  {/* Media Image / Banner */}
                   <div className="product-media">
                     <img
                       src={product.img}
@@ -373,7 +287,6 @@ export const Products = () => {
                     </div>
                   </div>
 
-                  {/* Card Body */}
                   <div className="product-body">
                     <div className="product-header">
                       <h3 className="product-title">{product.title}</h3>
@@ -384,7 +297,6 @@ export const Products = () => {
                       {product.description}
                     </p>
 
-                    {/* Highlights / Features Preview */}
                     <div className="product-features-snippet">
                       {product.features
                         .slice(0, isSingle ? 4 : 2)
@@ -396,7 +308,6 @@ export const Products = () => {
                         ))}
                     </div>
 
-                    {/* Tech Stack Chips */}
                     <div className="product-tech-chips">
                       {(isSingle
                         ? product.techStack
@@ -413,14 +324,13 @@ export const Products = () => {
                       )}
                     </div>
 
-                    {/* Card Actions */}
                     <div
                       className="product-actions"
                       onClick={(e) => e.stopPropagation()}
                     >
                       <button
                         className="product-btn-primary"
-                        onClick={() => handleOpenProduct(product)}
+                        onClick={() => handleOpenProduct(product, "overview")}
                       >
                         <FiLayers className="me-2" />
                         {t("quick_view")}
@@ -429,7 +339,7 @@ export const Products = () => {
                       <button
                         className="product-btn-download"
                         onClick={() => handleDownload(product)}
-                        title="Download for Ubuntu / Linux (.deb, AppImage & Installation Details)"
+                        title="Download for Ubuntu / Linux"
                       >
                         <SiUbuntu className="me-1 ubuntu-card-icon" />
                         Download
@@ -453,7 +363,7 @@ export const Products = () => {
           </div>
         )}
 
-        {/* Product Quick View Modal */}
+        {/* Responsive Product Quick View Modal */}
         {activeProduct && (
           <Modal
             show={!!activeProduct}
@@ -463,6 +373,7 @@ export const Products = () => {
             className="product-detail-modal"
           >
             <div className="modal-content-glass">
+              {/* Header */}
               <div className="modal-header-custom">
                 <div className="modal-title-group">
                   <span className="modal-category-badge">
@@ -484,8 +395,36 @@ export const Products = () => {
                 </button>
               </div>
 
+              {/* Modal Navigation Tabs (Responsive & Clear) */}
+              <div className="modal-nav-tabs">
+                <button
+                  type="button"
+                  className={`modal-tab-btn ${modalTab === "overview" ? "active" : ""}`}
+                  onClick={() => setModalTab("overview")}
+                >
+                  <FiInfo className="me-1" />
+                  <span>Overview &amp; Features</span>
+                </button>
+                <button
+                  type="button"
+                  className={`modal-tab-btn ${modalTab === "downloads" ? "active" : ""}`}
+                  onClick={() => setModalTab("downloads")}
+                >
+                  <FiDownload className="me-1" />
+                  <span>Downloads &amp; Packages</span>
+                </button>
+                <button
+                  type="button"
+                  className={`modal-tab-btn ${modalTab === "architecture" ? "active" : ""}`}
+                  onClick={() => setModalTab("architecture")}
+                >
+                  <FiCpu className="me-1" />
+                  <span>Kernel Architecture</span>
+                </button>
+              </div>
+
               <div className="modal-body-custom">
-                {/* Modal Visual Banner */}
+                {/* Visual Banner */}
                 <div className="modal-banner-img-wrap mb-4">
                   <img
                     src={activeProduct.img}
@@ -510,98 +449,134 @@ export const Products = () => {
                   </div>
                 </div>
 
-                {/* Ubuntu Download Center: Available APP Files, .deb Package, and Installation Details fetched from GitHub */}
-                <UbuntuDownloadCenter
-                  product={activeProduct}
-                  clientOS={detectedOS}
-                  isUbuntuDetected={detectedOS?.isUbuntu || detectedOS?.isLinuxFamily}
-                  onGuideDownload={() =>
-                    triggerFileDownload(
-                      generateUserGuide(activeProduct),
-                      `${activeProduct.title.replace(
-                        /\s+/g,
-                        "_"
-                      )}_Ubuntu_User_Guide.txt`
-                    )
-                  }
-                />
+                {/* TAB 1: Overview & Features */}
+                {modalTab === "overview" && (
+                  <div className="tab-pane-fade">
+                    {/* Structured Product Description */}
+                    <div className="modal-section mb-4">
+                      <h4 className="modal-section-title">
+                        <FiActivity className="me-2 text-primary" />
+                        Product Description
+                      </h4>
+                      <div className="product-full-desc-card p-3 rounded-3 mb-3">
+                        <p className="modal-desc-text mb-2">
+                          {activeProduct.description}
+                        </p>
+                        <p className="modal-desc-sub text-muted small mb-0">
+                          Designed with strict zero-guesswork telemetry principles: if a hardware metric cannot be authenticated through Linux kernel interfaces, it is honestly reported rather than fabricated.
+                        </p>
+                      </div>
+                    </div>
 
-                {/* Overview Description */}
-                <div className="modal-section mb-4">
-                  <h4 className="modal-section-title">
-                    <FiActivity className="me-2" />
-                    Overview
-                  </h4>
-                  <p className="modal-desc-text">{activeProduct.description}</p>
-                </div>
+                    {/* Key Capabilities */}
+                    <div className="modal-section mb-4">
+                      <h4 className="modal-section-title">
+                        <FiCheckCircle className="me-2 text-success" />
+                        {t("key_capabilities")}
+                      </h4>
+                      <div className="modal-features-list">
+                        {activeProduct.features.map((feat, idx) => (
+                          <div key={idx} className="modal-feature-row">
+                            <FiCheckCircle className="feature-check-icon text-success" />
+                            <span>{feat}</span>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
 
-                {/* Architecture Details */}
-                {activeProduct.architecture && (
-                  <div className="modal-section mb-4">
-                    <h4 className="modal-section-title">
-                      <FiCpu className="me-2" />
-                      {t("architecture_overview")}
-                    </h4>
-                    <div className="architecture-box">
-                      <p className="mb-0">{activeProduct.architecture}</p>
+                    {/* Tech Stack Chips */}
+                    <div className="modal-section mb-4">
+                      <h4 className="modal-section-title">
+                        <FiLayers className="me-2 text-info" />
+                        {t("tech_stack")}
+                      </h4>
+                      <div className="modal-tech-cloud">
+                        {activeProduct.techStack.map((tech, idx) => (
+                          <span key={idx} className="modal-tech-pill">
+                            {tech}
+                          </span>
+                        ))}
+                      </div>
                     </div>
                   </div>
                 )}
 
-                {/* Key Features */}
-                <div className="modal-section mb-4">
-                  <h4 className="modal-section-title">
-                    <FiCheckCircle className="me-2" />
-                    {t("key_capabilities")}
-                  </h4>
-                  <div className="modal-features-list">
-                    {activeProduct.features.map((feat, idx) => (
-                      <div key={idx} className="modal-feature-row">
-                        <FiCheckCircle className="feature-check-icon" />
-                        <span>{feat}</span>
-                      </div>
-                    ))}
+                {/* TAB 2: Downloads & Packages */}
+                {modalTab === "downloads" && (
+                  <div className="tab-pane-fade" id="ubuntu-download-center">
+                    <UbuntuDownloadCenter
+                      product={activeProduct}
+                      clientOS={detectedOS}
+                      isUbuntuDetected={detectedOS?.isUbuntu || detectedOS?.isLinuxFamily}
+                      onGuideDownload={() =>
+                        triggerFileDownload(
+                          generateUserGuide(activeProduct),
+                          `${activeProduct.title.replace(/\s+/g, "_")}_Ubuntu_User_Guide.txt`
+                        )
+                      }
+                    />
                   </div>
-                </div>
+                )}
 
-                {/* Tech Stack */}
-                <div className="modal-section mb-4">
-                  <h4 className="modal-section-title">
-                    <FiLayers className="me-2" />
-                    {t("tech_stack")}
-                  </h4>
-                  <div className="modal-tech-cloud">
-                    {activeProduct.techStack.map((tech, idx) => (
-                      <span key={idx} className="modal-tech-pill">
-                        {tech}
-                      </span>
-                    ))}
+                {/* TAB 3: Kernel Architecture */}
+                {modalTab === "architecture" && (
+                  <div className="tab-pane-fade">
+                    <div className="modal-section mb-4">
+                      <h4 className="modal-section-title">
+                        <FiCpu className="me-2 text-warning" />
+                        {t("architecture_overview")}
+                      </h4>
+                      <div className="architecture-box p-3 rounded-3 mb-3">
+                        <p className="mb-2">{activeProduct.architecture}</p>
+                      </div>
+
+                      <div className="arch-breakdown-cards">
+                        <div className="arch-card p-3 mb-2 rounded-2">
+                          <strong className="d-block text-primary small">1. Sandboxed IPC Layer</strong>
+                          <span className="small text-muted">
+                            Strict contextIsolation: true and nodeIntegration: false keeps Chromium renderer decoupled from host root privileges.
+                          </span>
+                        </div>
+                        <div className="arch-card p-3 mb-2 rounded-2">
+                          <strong className="d-block text-primary small">2. Kernel sysfs Telemetry</strong>
+                          <span className="small text-muted">
+                            Direct queries against /sys/devices/system/cpu and /sys/class/thermal sample true hardware clock frequencies continuously.
+                          </span>
+                        </div>
+                        <div className="arch-card p-3 mb-2 rounded-2">
+                          <strong className="d-block text-primary small">3. Reactive Polling Engine</strong>
+                          <span className="small text-muted">
+                            1-second reactive polling loop feeds dynamic React telemetry gauges with minimal CPU overhead.
+                          </span>
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                </div>
+                )}
               </div>
 
               {/* Modal Footer */}
               <div className="modal-footer-custom">
-                <div className="d-flex align-items-center gap-3 flex-wrap">
-                  <button
-                    className="modal-action-btn primary download-footer-btn"
-                    onClick={() => {
-                      const el = document.getElementById("ubuntu-download-center");
-                      if (el) el.scrollIntoView({ behavior: "smooth" });
-                    }}
-                  >
-                    <SiUbuntu className="me-2" />
-                    Ubuntu & Linux Downloads
-                  </button>
-                  <a
-                    href={activeProduct.github || socialprofils.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="modal-action-btn secondary"
-                  >
-                    <FiGithub className="me-2" />
-                    {t("view_code")}
-                  </a>
+                <div className="d-flex align-items-center gap-2 flex-wrap w-100 justify-content-between">
+                  <div className="d-flex gap-2 flex-wrap">
+                    <button
+                      className="modal-action-btn primary"
+                      onClick={() => setModalTab("downloads")}
+                    >
+                      <SiUbuntu className="me-1" />
+                      Ubuntu Downloads (.deb)
+                    </button>
+                    <a
+                      href={activeProduct.github || socialprofils.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="modal-action-btn secondary"
+                    >
+                      <FiGithub className="me-1" />
+                      {t("view_code")}
+                    </a>
+                  </div>
+
                   {activeProduct.link && activeProduct.link !== "#" && (
                     <a
                       href={activeProduct.link}
@@ -609,8 +584,8 @@ export const Products = () => {
                       rel="noopener noreferrer"
                       className="modal-action-btn secondary"
                     >
-                      <FiExternalLink className="me-2" />
-                      Repository Overview
+                      <FiExternalLink className="me-1" />
+                      Repository
                     </a>
                   )}
                 </div>
@@ -623,6 +598,5 @@ export const Products = () => {
   );
 };
 
-// Also export as Portfolio for backward compatibility
 export const Portfolio = Products;
 export default Products;

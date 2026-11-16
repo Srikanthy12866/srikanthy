@@ -7,10 +7,10 @@
 // Fallback metadata in case GitHub API rate limit (60 req/hr) is hit or offline
 export const FALLBACK_GITHUB_DATA = {
   owner: "Srikanthy12866",
-  repo: "DEEP_HARDWARE_SEEKER",
-  repoUrl: "https://github.com/Srikanthy12866/DEEP_HARDWARE_SEEKER",
+  repo: "Go-Seek",
+  repoUrl: "https://github.com/Srikanthy12866/Go-Seek",
   branch: "main",
-  productName: "Fieldnote Device Report",
+  productName: "Go Seek",
   version: "0.1.0",
   description: "Deep Hardware Diagnostic & Real-Time Host Telemetry Suite for Ubuntu / Linux",
   linuxTargets: ["AppImage", "deb"],
@@ -34,6 +34,7 @@ export const FALLBACK_GITHUB_DATA = {
     date: "2026-10-05T09:04:23Z",
   },
   releases: [],
+  latestReleaseUrl: "https://github.com/Srikanthy12866/Go-Seek/releases",
   isCached: true,
 };
 
@@ -41,15 +42,15 @@ export const FALLBACK_GITHUB_DATA = {
  * Parses GitHub owner and repo name from URL
  */
 export const parseGithubRepo = (url) => {
-  if (!url) return { owner: "Srikanthy12866", repo: "DEEP_HARDWARE_SEEKER" };
+  if (!url) return { owner: "Srikanthy12866", repo: "Go-Seek" };
   try {
     const cleanUrl = url.replace(/\/$/, "");
     const parts = cleanUrl.split("/");
-    const repo = parts.pop()?.replace(/\.git$/, "") || "DEEP_HARDWARE_SEEKER";
+    const repo = parts.pop()?.replace(/\.git$/, "") || "Go-Seek";
     const owner = parts.pop() || "Srikanthy12866";
     return { owner, repo };
   } catch {
-    return { owner: "Srikanthy12866", repo: "DEEP_HARDWARE_SEEKER" };
+    return { owner: "Srikanthy12866", repo: "Go-Seek" };
   }
 };
 
@@ -127,6 +128,7 @@ export const fetchGithubRepoDetails = async (repoUrl) => {
     dependencies: { ...FALLBACK_GITHUB_DATA.dependencies },
     latestCommit: { ...FALLBACK_GITHUB_DATA.latestCommit },
     releases: [],
+    latestReleaseUrl: `https://github.com/${owner}/${repo}/releases`,
     availableFiles: [],
     readmeContent: "",
     fetchedAt: new Date().toISOString(),
@@ -227,18 +229,17 @@ export const fetchGithubRepoDetails = async (repoUrl) => {
 
     if (Array.isArray(result.releases) && result.releases.length > 0) {
       const latestRel = result.releases[0];
+      result.latestReleaseUrl = latestRel.html_url || result.latestReleaseUrl;
       if (Array.isArray(latestRel.assets)) {
-        debAsset = latestRel.assets.find((a) => a.name.endsWith(".deb"));
-        appImageAsset = latestRel.assets.find((a) => a.name.endsWith(".AppImage"));
+        debAsset = latestRel.assets.find((a) => /\.deb$/i.test(a.name));
+        appImageAsset = latestRel.assets.find((a) => /\.AppImage$/i.test(a.name));
       }
     }
 
     // A. DEB File (Native Ubuntu / Debian Package)
     const debFileName = debAsset?.name || `${prodSlug}-${v}-amd64.deb`;
     const debArm64FileName = `${prodSlug}-${v}-arm64.deb`;
-    const debDownloadUrl =
-      debAsset?.browser_download_url ||
-      `https://github.com/${owner}/${repo}/releases/download/v${v}/${debFileName}`;
+    const debDownloadUrl = debAsset?.browser_download_url || result.latestReleaseUrl;
 
     files.push({
       id: "deb-x64",
@@ -252,20 +253,20 @@ export const fetchGithubRepoDetails = async (repoUrl) => {
       downloadUrl: debDownloadUrl,
       repoDownloadFallback: `https://github.com/${owner}/${repo}/archive/refs/heads/main.zip`,
       isDirectAsset: !!debAsset,
+      isAvailable: !!debAsset,
+      releaseUrl: result.latestReleaseUrl,
       description:
         "Native Ubuntu installation package. Registers system menu shortcut, desktop telemetry service, and sandboxed Electron kernel bridge.",
       installCmd: `sudo dpkg -i ${debFileName}`,
       fixCmd: `sudo apt-get install -f -y`,
       runCmd: `fieldnote-device-report`,
       arm64FileName: debArm64FileName,
-      arm64DownloadUrl: `https://github.com/${owner}/${repo}/releases/download/v${v}/${debArm64FileName}`,
+      arm64DownloadUrl: debAsset?.browser_download_url || result.latestReleaseUrl,
     });
 
     // B. AppImage File (Universal Linux Portable App)
     const appImageFileName = appImageAsset?.name || `${prodSlug}-${v}-x86_64.AppImage`;
-    const appImageDownloadUrl =
-      appImageAsset?.browser_download_url ||
-      `https://github.com/${owner}/${repo}/releases/download/v${v}/${appImageFileName}`;
+    const appImageDownloadUrl = appImageAsset?.browser_download_url || result.latestReleaseUrl;
 
     files.push({
       id: "appimage",
@@ -279,8 +280,13 @@ export const fetchGithubRepoDetails = async (repoUrl) => {
       downloadUrl: appImageDownloadUrl,
       repoDownloadFallback: `https://github.com/${owner}/${repo}/archive/refs/heads/main.zip`,
       isDirectAsset: !!appImageAsset,
+      isAvailable: !!appImageAsset,
+      releaseUrl: result.latestReleaseUrl,
       description:
         "Self-contained standalone executable. Requires no root privileges or installation. Run anywhere directly from your downloads folder.",
+      availabilityMessage: appImageAsset
+        ? "Ready to download from the latest GitHub release."
+        : "The latest GitHub release does not contain an AppImage yet. Open the release page for the current status.",
       installCmd: `chmod +x ${appImageFileName} && ./${appImageFileName}`,
       runCmd: `./${appImageFileName}`,
       fuseNote: "Ubuntu 22.04+ may require: sudo apt install libfuse2 -y",
@@ -328,8 +334,10 @@ export const fetchGithubRepoDetails = async (repoUrl) => {
         arch: "x86_64 (amd64)",
         targetOS: "Ubuntu 24.04 / 22.04 / 20.04 LTS & Debian 11/12",
         size: "~85.2 MB",
-        downloadUrl: `https://github.com/${owner}/${repo}/archive/refs/heads/main.zip`,
+        downloadUrl: `https://github.com/${owner}/${repo}/releases`,
         isDirectAsset: false,
+        isAvailable: false,
+        releaseUrl: `https://github.com/${owner}/${repo}/releases`,
         description:
           "Native Ubuntu installation package. Registers system menu shortcut, desktop telemetry service, and sandboxed Electron kernel bridge.",
         installCmd: `sudo dpkg -i Fieldnote-Device-Report-0.1.0-amd64.deb`,
@@ -345,8 +353,10 @@ export const fetchGithubRepoDetails = async (repoUrl) => {
         arch: "x86_64",
         targetOS: "Ubuntu (All LTS versions), Debian, Fedora, Arch Linux",
         size: "~92.4 MB",
-        downloadUrl: `https://github.com/${owner}/${repo}/archive/refs/heads/main.zip`,
+        downloadUrl: `https://github.com/${owner}/${repo}/releases`,
         isDirectAsset: false,
+        isAvailable: false,
+        releaseUrl: `https://github.com/${owner}/${repo}/releases`,
         description:
           "Self-contained standalone executable. Requires no root privileges or installation. Run anywhere directly from your downloads folder.",
         installCmd: `chmod +x Fieldnote-Device-Report-0.1.0-x86_64.AppImage && ./Fieldnote-Device-Report-0.1.0-x86_64.AppImage`,

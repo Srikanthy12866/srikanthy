@@ -1,34 +1,34 @@
-import { supabase } from '../supabaseClient';
+/**
+ * Secure Backend Resume Service (Goal 5)
+ * All storage keys and API secrets are securely retained on the backend microservice.
+ * Frontend clients retrieve the file directly via backend streaming endpoint.
+ */
 
-// Returns a signed URL for a file in Supabase Storage
-export async function getResumeSignedUrl({ bucket = 'resumes', path = 'resume.pdf', expiresIn = 60 } = {}) {
-  const { data, error } = await supabase.storage.from(bucket).createSignedUrl(path, expiresIn);
-  if (error) throw error;
-  return data.signedUrl;
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8082';
+
+export function getResumeDownloadUrl() {
+  return `${BACKEND_URL}/api/resume/download`;
 }
 
-// Fetches the resume as a Blob (useful for downloading or creating an object URL)
-export async function fetchResumeBlob(opts = {}) {
-  const url = await getResumeSignedUrl(opts);
+export async function fetchResumeBlob() {
+  const url = getResumeDownloadUrl();
   const response = await fetch(url);
 
   if (!response.ok) {
-    throw new Error(`Failed to fetch resume: ${response.status} ${response.statusText}`);
+    throw new Error(`Failed to fetch resume from backend: ${response.status} ${response.statusText}`);
   }
 
   return response.blob();
 }
 
-// Optional helper: get a public URL if the file is public
-export async function getResumePublicUrl({ bucket = 'resumes', path = 'resume.pdf' } = {}) {
-  const { data, error } = await supabase.storage.from(bucket).getPublicUrl(path);
-  if (error) throw error;
-  return data.publicUrl;
-}
-
-
-// sampler export async function getResumePublicUrl1Notuse({ bucket = 'resumes', path = 'resume.pdf' } = {}) {
-  const { data, error } = await supabase.storage.from(bucket).getPublicUrl(path);
-  if (error) throw error;
-  return data.publicUrl;
+export async function triggerResumeDownload(filename = 'Yepalagunta_Srikanth_Resume.pdf') {
+  const blob = await fetchResumeBlob();
+  const blobUrl = window.URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = blobUrl;
+  link.setAttribute('download', filename);
+  document.body.appendChild(link);
+  link.click();
+  link.remove();
+  window.URL.revokeObjectURL(blobUrl);
 }

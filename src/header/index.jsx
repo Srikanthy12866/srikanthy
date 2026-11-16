@@ -20,15 +20,14 @@ const Headermain = () => {
     e.preventDefault();
     handleToggle();
     
-    // Construct Google Drive direct download URL
-    const fileId = resume;
-    const googleDriveDownloadUrl = `https://drive.google.com/uc?export=download&id=${fileId}`;
+    // Call backend microservice endpoint (Goal 5: all keys moved to backend)
+    const backendResumeUrl = resume || "http://localhost:8082/api/resume/download";
     
     try {
-      const response = await fetch(googleDriveDownloadUrl);
-      if (!response.ok) throw new Error('Network response was not ok');
+      const response = await fetch(backendResumeUrl);
+      if (!response.ok) throw new Error('Failed to retrieve resume from backend service');
       const blob = await response.blob();
-      const filename = 'Resume.pdf';
+      const filename = 'Yepalagunta_Srikanth_Resume.pdf';
       const blobUrl = window.URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = blobUrl;
@@ -38,9 +37,8 @@ const Headermain = () => {
       link.remove();
       window.URL.revokeObjectURL(blobUrl);
     } catch (err) {
-      console.error('Download error:', err);
-      // Fallback: open the Google Drive file in a new tab
-      window.open(`https://drive.google.com/file/d/${fileId}/view`, '_blank');
+      console.warn('Direct stream fallback:', err);
+      window.open(backendResumeUrl, '_blank');
     }
   };
 

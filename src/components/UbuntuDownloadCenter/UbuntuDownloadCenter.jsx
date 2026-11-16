@@ -81,6 +81,8 @@ export const UbuntuDownloadCenter = ({
 
   // Download trigger
   const handleDownloadFile = (fileItem) => {
+    if (!fileItem?.downloadUrl) return;
+
     const filename =
       arch === "arm64" && fileItem.arm64FileName
         ? fileItem.arm64FileName
@@ -91,21 +93,24 @@ export const UbuntuDownloadCenter = ({
         ? fileItem.arm64DownloadUrl
         : fileItem.downloadUrl;
 
+    const hasAsset = fileItem.isDirectAsset;
     setNotification({
-      title: `Starting Download: ${filename}`,
-      message: `Fetching ${fileItem.badge} package from GitHub repository...`,
+      title: hasAsset ? `Starting Download: ${filename}` : "GitHub asset not published yet",
+      message: hasAsset
+        ? `Fetching ${fileItem.badge} package from GitHub repository...`
+        : "Opening the latest GitHub release so you can check for the published package.",
     });
 
     setTimeout(() => {
       setNotification(null);
     }, 4500);
 
-    // Trigger download
+    // Download published assets; otherwise open the release page rather than a broken URL.
     const link = document.createElement("a");
     link.href = targetUrl;
-    link.setAttribute("download", filename);
     link.setAttribute("target", "_blank");
     link.setAttribute("rel", "noopener noreferrer");
+    if (hasAsset) link.setAttribute("download", filename);
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -420,14 +425,21 @@ export const UbuntuDownloadCenter = ({
                 Self-contained with all Electron runtimes and hardware readers.
               </p>
 
+              {!appImageFile.isAvailable && (
+                <p className="small text-warning mb-3">
+                  The repository currently has no published AppImage asset. The button
+                  below opens the latest release page instead of starting a broken download.
+                </p>
+              )}
+
               <div className="file-actions-row">
                 <button
                   className="btn btn-primary download-file-btn"
                   onClick={() => handleDownloadFile(appImageFile)}
-                  title="Download .AppImage package"
+                  title={appImageFile.isAvailable ? "Download .AppImage package" : "Open latest GitHub release"}
                 >
                   <FiDownload className="me-2" />
-                  Download .AppImage
+                  {appImageFile.isAvailable ? "Download .AppImage" : "Check GitHub release"}
                 </button>
 
                 <button
