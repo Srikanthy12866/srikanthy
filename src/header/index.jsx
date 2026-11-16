@@ -21,7 +21,7 @@ const Headermain = () => {
     handleToggle();
     
     // Call backend microservice endpoint (Goal 5: all keys moved to backend)
-    const backendResumeUrl = resume || "http://localhost:8082/api/resume/download";
+    const backendResumeUrl = resume || "https://go-seek-backend.onrender.com/api/resume/download";
     
     try {
       const response = await fetch(backendResumeUrl);

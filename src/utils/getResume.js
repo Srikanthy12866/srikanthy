@@ -4,7 +4,7 @@
  * Frontend clients retrieve the file directly via backend streaming endpoint.
  */
 
-const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8082';
+const BACKEND_URL = import.meta.env.VITE_BACKEND_URL || 'https://go-seek-backend.onrender.com';
 
 export function getResumeDownloadUrl() {
   return `${BACKEND_URL}/api/resume/download`;
@@ -22,13 +22,18 @@ export async function fetchResumeBlob() {
 }
 
 export async function triggerResumeDownload(filename = 'Yepalagunta_Srikanth_Resume.pdf') {
-  const blob = await fetchResumeBlob();
-  const blobUrl = window.URL.createObjectURL(blob);
-  const link = document.createElement('a');
-  link.href = blobUrl;
-  link.setAttribute('download', filename);
-  document.body.appendChild(link);
-  link.click();
-  link.remove();
-  window.URL.revokeObjectURL(blobUrl);
+  try {
+    const blob = await fetchResumeBlob();
+    const blobUrl = window.URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = blobUrl;
+    link.setAttribute('download', filename);
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    window.URL.revokeObjectURL(blobUrl);
+  } catch (err) {
+    console.warn('Direct stream fallback for resume:', err);
+    window.open(getResumeDownloadUrl(), '_blank');
+  }
 }

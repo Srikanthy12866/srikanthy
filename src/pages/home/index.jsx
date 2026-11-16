@@ -6,7 +6,8 @@ import { introdata, meta } from "../../content_option";
 import { Link } from "react-router-dom";
 import blackAndWhiteImage from "../../assets/images/black-and-white-image.png";
 import { useTranslation } from "react-i18next";
-import { FiCpu, FiLayers, FiTerminal, FiShield, FiArrowRight, FiLifeBuoy } from "react-icons/fi";
+import { FiCpu, FiLayers, FiTerminal, FiShield, FiArrowRight, FiLifeBuoy, FiDownload } from "react-icons/fi";
+import { triggerResumeDownload } from "../../utils/getResume";
 
 export const Home = () => {
   const { t } = useTranslation();
@@ -98,10 +99,20 @@ export const Home = () => {
                     </div>
                   </Link>
 
-                  <Link to="/contact#report-ticket" className="ticket-link-btn">
+                  <Link to="/contact#report-ticket" className="ticket-link-btn me-2">
                     <FiLifeBuoy className="me-1" />
                     <span>Submit Issue Ticket</span>
                   </Link>
+
+                  <button
+                    type="button"
+                    onClick={() => triggerResumeDownload()}
+                    className="resume-download-btn"
+                    title="Download Official Resume via Backend Proxy"
+                  >
+                    <FiDownload className="me-1" />
+                    <span>{t('Resume')}</span>
+                  </button>
                 </div>
               </div>
             </div>
