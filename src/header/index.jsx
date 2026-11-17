@@ -3,7 +3,6 @@ import "./style.css";
 import { Link } from "react-router-dom";
 import { logotext } from "../content_option";
 import Themetoggle from "../components/themetoggle";
-import LanguageSwitcher from "../components/languageswitcher";
 
 const Headermain = () => {
   return (
@@ -13,8 +12,7 @@ const Headermain = () => {
           <Link className="navbar-brand nav_ac" to="/">
             {logotext}
           </Link>
-          <div className="d-flex align-items-center gap-2">
-            <LanguageSwitcher />
+          <div className="d-flex align-items-center">
             <Themetoggle />
           </div>
         </div>
