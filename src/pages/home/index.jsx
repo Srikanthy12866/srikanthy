@@ -235,46 +235,16 @@ export const Home = () => {
                   />
                 </div>
 
-                <p className="hero-description">{introdata.description}</p>
-
-                {/* Highlights Metrics */}
-                <div className="hero-metrics-grid mb-4">
-                  {introdata.highlights.map((h, i) => (
-                    <div key={i} className="metric-chip">
-                      <span className="metric-label">{h.label}:</span>
-                      <span className="metric-val">{h.val}</span>
-                    </div>
-                  ))}
-                </div>
+                <p className="hero-description mb-4">{introdata.description}</p>
 
                 {/* Quick CTA Actions */}
                 <div className="hero-cta-group d-flex flex-wrap gap-3">
                   <button
-                    className="btn btn-primary custom-btn"
-                    onClick={() => {
-                      document.getElementById("contact")?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                  >
-                    <span>Hire Me / Contact</span>
-                    <FiArrowRight className="ms-2" />
-                  </button>
-
-                  <button
-                    className="btn btn-outline-secondary custom-btn"
+                    className="btn btn-primary custom-btn px-4 py-2"
                     onClick={() => triggerResumeDownload("Srikanth_Yepalagunta_Resume.pdf")}
                   >
                     <FiDownload className="me-2" />
                     <span>Download Resume</span>
-                  </button>
-
-                  <button
-                    className="btn btn-outline-info custom-btn"
-                    onClick={() => {
-                      document.getElementById("products")?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                  >
-                    <SiUbuntu className="me-2" />
-                    <span>Go Seeker</span>
                   </button>
                 </div>
               </Col>
