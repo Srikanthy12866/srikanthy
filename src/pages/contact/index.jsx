@@ -145,7 +145,7 @@ export const ContactUs = () => {
       setAlert({
         show: true,
         variant: "success",
-        message: `Issue ticket logged successfully in app_db! Notification sent to ${contactConfig.YOUR_EMAIL}.`,
+        message: `Issue ticket logged successfully! Notification sent to ${contactConfig.YOUR_EMAIL}.`,
         ticketCode: data.ticketCode,
       });
 
@@ -195,15 +195,11 @@ export const ContactUs = () => {
             <hr className="t_border my-4 ml-0 text-left" />
             <div className="d-flex align-items-center gap-3 microservice-status-bar mb-3">
               <span className="small text-muted d-flex align-items-center">
-                <FiActivity className="me-1 text-primary" /> Cloud Microservices:
+                <FiActivity className="me-1 text-primary" /> Service Status:
               </span>
-              <span className={`badge ${cloudStatus.backend === "online" ? "bg-success" : "bg-warning text-dark"} d-inline-flex align-items-center`}>
+              <span className={`badge ${cloudStatus.backend === "online" && cloudStatus.auth === "online" ? "bg-success" : "bg-warning text-dark"} d-inline-flex align-items-center`}>
                 <span className="status-dot me-1">●</span>
-                Backend: {cloudStatus.backend === "online" ? "Online" : "Waking up..."}
-              </span>
-              <span className={`badge ${cloudStatus.auth === "online" ? "bg-success" : "bg-warning text-dark"} d-inline-flex align-items-center`}>
-                <span className="status-dot me-1">●</span>
-                Auth: {cloudStatus.auth === "online" ? "Online" : "Waking up..."}
+                {cloudStatus.backend === "online" && cloudStatus.auth === "online" ? "All Systems Operational" : "Connecting..."}
               </span>
             </div>
           </Col>
@@ -271,9 +267,9 @@ export const ContactUs = () => {
                 </div>
 
                 <div className="contact-backend-pill p-3 mt-4 rounded-3">
-                  <div className="small font-monospace text-success mb-1">● BACKEND MICROSERVICE ACTIVE</div>
+                  <div className="small font-monospace text-success mb-1">● DIRECT ENCRYPTED DISPATCH</div>
                   <div className="small text-muted">
-                    No third-party failure points. Inquiries and tickets are stored securely in <strong>app_db</strong> and emailed directly via Spring Boot JavaMail.
+                    No third-party failure points. Inquiries and tickets are delivered securely and routed directly to Srikanth.
                   </div>
                 </div>
               </div>
@@ -349,7 +345,7 @@ export const ContactUs = () => {
               <div className="ticket-form-wrap p-4 rounded-3">
                 <div className="d-flex align-items-center justify-content-between mb-3">
                   <h4 className="mb-0">Report Application Issue</h4>
-                  <span className="badge bg-warning text-dark">Tickets DB: app_db</span>
+                  <span className="badge bg-success">Automated Dispatch</span>
                 </div>
                 <p className="text-muted small mb-4">
                   Report any issues or bugs found in either <strong>Go-Seek</strong> or this <strong>Portfolio</strong>. This will log a ticket and send an immediate notification to Srikanth.

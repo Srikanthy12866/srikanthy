@@ -24,8 +24,8 @@ export const SwarmIntro = ({ onComplete }) => {
     // Stream agent logs during swarm build
     const logTimers = [
       setTimeout(() => setLogs((prev) => [...prev, "[AGENT-01] Intercepting 404... Multi-Agent Swarm Deployed"]), 1100),
-      setTimeout(() => setLogs((prev) => [...prev, "[AGENT-02] Establishing Spring Boot Microservices Mesh"]), 1400),
-      setTimeout(() => setLogs((prev) => [...prev, "[AGENT-03] Linking TiDB Cloud Serverless (auth_db & app_db)"]), 1700),
+      setTimeout(() => setLogs((prev) => [...prev, "[AGENT-02] Establishing Resilient Cloud Service Mesh"]), 1400),
+      setTimeout(() => setLogs((prev) => [...prev, "[AGENT-03] Synchronizing Cloud Cluster & Distributed Data Layer"]), 1700),
       setTimeout(() => setLogs((prev) => [...prev, "[AGENT-04] Mounting Linux sysfs Real-Time Telemetry Bridge"]), 2000),
       setTimeout(() => setLogs((prev) => [...prev, "[AGENT-05] Reconstructing React Single-Page Architecture"]), 2300),
       setTimeout(() => setLogs((prev) => [...prev, "[SWARM] System Built Successfully (100%). Launching..."]), 2600),
@@ -33,12 +33,14 @@ export const SwarmIntro = ({ onComplete }) => {
 
     // Finish building at 3.0s
     const timer3 = setTimeout(() => {
+      try { sessionStorage.setItem("has_seen_swarm_intro", "true"); } catch (e) {}
       setPhase("FINISHED");
       if (onComplete) onComplete();
     }, 3100);
 
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
+        try { sessionStorage.setItem("has_seen_swarm_intro", "true"); } catch (e) {}
         setPhase("FINISHED");
         if (onComplete) onComplete();
       }

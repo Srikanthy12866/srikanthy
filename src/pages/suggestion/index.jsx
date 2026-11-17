@@ -145,7 +145,7 @@ export const Suggestion = () => {
                 </Form.Group>
 
                 <div className="d-flex justify-content-between align-items-center">
-                  <span className="text-muted small">Logs directly into TiDB Cloud `app_db`</span>
+                  <span className="text-muted small">Direct &amp; secure delivery to engineering team</span>
                   <Button
                     variant="primary"
                     type="submit"
@@ -164,3 +164,4 @@ export const Suggestion = () => {
     </HelmetProvider>
   );
 };
+

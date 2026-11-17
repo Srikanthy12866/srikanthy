@@ -50,8 +50,16 @@ import { Container, Row, Col, Alert, Modal, Button } from "react-bootstrap";
 export const Home = () => {
   const { t } = useTranslation();
 
-  // Swarm Intro state (Runs on load)
-  const [showIntro, setShowIntro] = useState(true);
+  // Swarm Intro state (Runs only on initial visit per browser session)
+  const [showIntro, setShowIntro] = useState(() => {
+    if (typeof window === "undefined") return false;
+    return !sessionStorage.getItem("has_seen_swarm_intro");
+  });
+
+  const handleIntroComplete = () => {
+    sessionStorage.setItem("has_seen_swarm_intro", "true");
+    setShowIntro(false);
+  };
 
   // Ubuntu Download Center Modal for Go Seeker
   const [showDownloadCenter, setShowDownloadCenter] = useState(false);
@@ -168,7 +176,7 @@ export const Home = () => {
       setFormAlert({
         show: true,
         variant: "success",
-        message: `Issue ticket logged successfully in app_db! Notification sent to ${contactConfig.YOUR_EMAIL}.`,
+        message: `Issue ticket logged successfully! Notification sent to ${contactConfig.YOUR_EMAIL}.`,
         ticketCode: data.ticketCode,
       });
       setTicketData({
@@ -195,8 +203,8 @@ export const Home = () => {
 
   return (
     <HelmetProvider>
-      {/* 1. Futuristic 404 into Swarm of Agents Intro */}
-      {showIntro && <SwarmIntro onComplete={() => setShowIntro(false)} />}
+      {/* 1. Futuristic 404 into Swarm of Agents Intro (Plays on initial visit only) */}
+      {showIntro && <SwarmIntro onComplete={handleIntroComplete} />}
 
       {/* 2. Left Side-Center Floating Navigation Rail */}
       <SideNav />
@@ -663,29 +671,21 @@ export const Home = () => {
               </span>
               <h2 className="section-heading">Contact &amp; Issue Ticketing Center</h2>
               <p className="section-subheading">
-                Reach out for engineering consultations, hire me for full-stack contracts, or log a technical issue directly into TiDB Cloud Serverless (`app_db`).
+                Reach out for engineering consultations, hire me for full-stack contracts, or submit a technical issue ticket.
               </p>
 
-              {/* Real-Time Cloud Microservices Health Bar */}
+              {/* Real-Time Service Status Bar */}
               <div className="d-flex align-items-center gap-3 microservice-status-bar mt-3">
                 <span className="small text-muted d-flex align-items-center">
-                  <FiActivity className="me-1 text-primary" /> Cloud Microservices:
+                  <FiActivity className="me-1 text-primary" /> Service Status:
                 </span>
                 <span
                   className={`badge ${
-                    cloudStatus.backend === "online" ? "bg-success" : "bg-warning text-dark"
+                    cloudStatus.backend === "online" && cloudStatus.auth === "online" ? "bg-success" : "bg-warning text-dark"
                   } d-inline-flex align-items-center`}
                 >
                   <span className="status-dot me-1">●</span>
-                  Backend: {cloudStatus.backend === "online" ? "Online" : "Waking up..."}
-                </span>
-                <span
-                  className={`badge ${
-                    cloudStatus.auth === "online" ? "bg-success" : "bg-warning text-dark"
-                  } d-inline-flex align-items-center`}
-                >
-                  <span className="status-dot me-1">●</span>
-                  Auth: {cloudStatus.auth === "online" ? "Online" : "Waking up..."}
+                  {cloudStatus.backend === "online" && cloudStatus.auth === "online" ? "All Systems Operational" : "Connecting..."}
                 </span>
               </div>
             </div>
@@ -710,16 +710,16 @@ export const Home = () => {
                     <div className="contact-info-item">
                       <FiTerminal className="info-icon text-primary" />
                       <div>
-                        <div className="label">Database Cluster</div>
-                        <span className="value">TiDB Cloud Serverless (app_db &amp; auth_db)</span>
+                        <div className="label">Architecture</div>
+                        <span className="value">High-Availability Cloud Microservices</span>
                       </div>
                     </div>
 
                     <div className="contact-info-item">
                       <FiServer className="info-icon text-primary" />
                       <div>
-                        <div className="label">Deployment Host</div>
-                        <span className="value">Render.com Microservices (Java 17 / Docker)</span>
+                        <div className="label">Location</div>
+                        <span className="value">Hyderabad, India (Remote Available)</span>
                       </div>
                     </div>
                   </div>
@@ -856,10 +856,8 @@ export const Home = () => {
                             value={ticketData.appSource}
                             onChange={(e) => setTicketData({ ...ticketData, appSource: e.target.value })}
                           >
-                            <option value="Go-Seek">Go-Seek (Ubuntu Hardware Diagnostics)</option>
-                            <option value="Srikanthy-Portfolio">Srikanthy Portfolio</option>
-                            <option value="Auth-Service">Auth-Service Microservice</option>
-                            <option value="Go-Seek-Backend">Go-Seek Backend Microservice</option>
+                            <option value="Go-Seek">Go-Seek Application</option>
+                            <option value="Srikanthy-Portfolio">Portfolio Website</option>
                           </select>
                         </Col>
 
@@ -937,7 +935,7 @@ export const Home = () => {
                             disabled={formLoading}
                           >
                             <FiAlertCircle className="me-2" />
-                            <span>{formLoading ? "Logging into app_db..." : "Log Issue Ticket"}</span>
+                            <span>{formLoading ? "Submitting Ticket..." : "Log Issue Ticket"}</span>
                           </button>
                         </Col>
                       </Row>
