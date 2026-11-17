@@ -26,6 +26,14 @@ export default function App() {
         window.history.replaceState(null, null, `${cleanBase}/${hashPath}`);
       }
     }
+
+    // Silent background pre-warm for Render cloud backend services (prevents cold start delays)
+    const prewarmCloudServices = () => {
+      const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://go-seek-backend.onrender.com";
+      fetch(`${backendUrl}/api/health`, { method: "GET", mode: "cors" }).catch(() => {});
+      fetch("https://auth-service-v3f4.onrender.com/api/health", { method: "GET", mode: "cors" }).catch(() => {});
+    };
+    prewarmCloudServices();
   }, []);
 
   return (
