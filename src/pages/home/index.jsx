@@ -262,15 +262,6 @@ export const Home = () => {
                     <div className="reticle bottom-left"></div>
                     <div className="reticle bottom-right"></div>
                   </div>
-
-                  {/* Floating Agentic Telemetry Pill */}
-                  <div className="floating-agent-pill">
-                    <span className="live-ping-dot"></span>
-                    <div>
-                      <div className="pill-title">Multi-Agent Swarm Active</div>
-                      <div className="pill-sub">Java 17 · Spring Boot 3 · Linux sysfs</div>
-                    </div>
-                  </div>
                 </div>
               </Col>
             </Row>
