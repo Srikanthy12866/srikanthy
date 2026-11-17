@@ -4,6 +4,7 @@ import { BrowserRouter as Router, useLocation } from "react-router-dom";
 import AppRoutes from "./routes";
 import Headermain from "../header";
 import AnimatedCursor from "../hooks/AnimatedCursor";
+import { pingMicroservices } from "../utils/healthCheck";
 import "./App.css";
 
 const BASE_NAME = import.meta.env.BASE_URL;
@@ -27,13 +28,8 @@ export default function App() {
       }
     }
 
-    // Silent background pre-warm for Render cloud backend services (prevents cold start delays)
-    const prewarmCloudServices = () => {
-      const backendUrl = import.meta.env.VITE_BACKEND_URL || "https://go-seek-backend.onrender.com";
-      fetch(`${backendUrl}/api/health`, { method: "GET", mode: "cors" }).catch(() => {});
-      fetch("https://auth-service-v3f4.onrender.com/api/health", { method: "GET", mode: "cors" }).catch(() => {});
-    };
-    prewarmCloudServices();
+    // Trigger direct health checks to both microservices immediately on application load
+    pingMicroservices();
   }, []);
 
   return (

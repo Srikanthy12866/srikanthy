@@ -4,7 +4,8 @@ import { Helmet, HelmetProvider } from "react-helmet-async";
 import { meta, contactConfig } from "../../content_option";
 import { Container, Row, Col, Alert } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { FiMail, FiMessageSquare, FiAlertCircle, FiCheckCircle, FiSend, FiLifeBuoy } from "react-icons/fi";
+import { FiMail, FiMessageSquare, FiAlertCircle, FiCheckCircle, FiSend, FiLifeBuoy, FiActivity } from "react-icons/fi";
+import { pingMicroservices } from "../../utils/healthCheck";
 
 export const ContactUs = () => {
   const { t } = useTranslation();
@@ -29,6 +30,10 @@ export const ContactUs = () => {
   });
 
   const [loading, setLoading] = useState(false);
+  const [cloudStatus, setCloudStatus] = useState({
+    backend: "checking", // "checking", "online", "waking"
+    auth: "checking",
+  });
   const [alert, setAlert] = useState({
     show: false,
     variant: "success",
@@ -36,11 +41,22 @@ export const ContactUs = () => {
     ticketCode: null,
   });
 
-  // Check URL hash for direct navigation e.g. #report-ticket
+  // Call health check APIs to both microservices upon navigating to contact page
   useEffect(() => {
     if (window.location.hash === "#report-ticket") {
       setActiveTab("ticket");
     }
+
+    pingMicroservices().then((results) => {
+      if (Array.isArray(results)) {
+        const backendRes = results.find((r) => r && r.name === "go-seek-backend");
+        const authRes = results.find((r) => r && r.name === "auth-service");
+        setCloudStatus({
+          backend: backendRes && backendRes.ok ? "online" : "waking",
+          auth: authRes && authRes.ok ? "online" : "waking",
+        });
+      }
+    });
   }, []);
 
   const handleContactChange = (e) => {
@@ -152,6 +168,19 @@ export const ContactUs = () => {
               Reach out for engineering inquiries, architecture consultations, or submit a technical issue ticket for Go-Seek or this portfolio.
             </p>
             <hr className="t_border my-4 ml-0 text-left" />
+            <div className="d-flex align-items-center gap-3 microservice-status-bar mb-3">
+              <span className="small text-muted d-flex align-items-center">
+                <FiActivity className="me-1 text-primary" /> Cloud Microservices:
+              </span>
+              <span className={`badge ${cloudStatus.backend === "online" ? "bg-success" : "bg-warning text-dark"} d-inline-flex align-items-center`}>
+                <span className="status-dot me-1">●</span>
+                Backend: {cloudStatus.backend === "online" ? "Online" : "Waking up..."}
+              </span>
+              <span className={`badge ${cloudStatus.auth === "online" ? "bg-success" : "bg-warning text-dark"} d-inline-flex align-items-center`}>
+                <span className="status-dot me-1">●</span>
+                Auth: {cloudStatus.auth === "online" ? "Online" : "Waking up..."}
+              </span>
+            </div>
           </Col>
         </Row>
 
