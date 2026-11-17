@@ -1,15 +1,30 @@
-.theme_toggler {
-    background: var(--primary-color);
-    z-index: 999999999;
-    left: 10px;
-    background: var(--primary-color);
-    display: flex;
-    height: 50px;
+.theme-toggle-btn {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    color: var(--text-color);
+    display: inline-flex;
     align-items: center;
-    padding-left: 10px;
+    gap: 8px;
+    padding: 6px 14px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-transform: capitalize;
+    transition: all 0.25s ease;
+    backdrop-filter: blur(8px);
 }
 
-.theme_toggler svg {
-    width: 2em;
-    height: 2em;
+.theme-toggle-btn:hover {
+    border-color: var(--accent-color);
+    box-shadow: 0 0 12px var(--accent-glow);
+    transform: translateY(-1px);
+}
+
+.theme-icon-wrap {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.1rem;
+    color: var(--accent-color);
 }

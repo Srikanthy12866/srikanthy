@@ -46,6 +46,7 @@
     position: fixed;
     z-index: 999999;
     background: var(--primary-color);
+    pointer-events: none;
 }
 
 .br-top {
