@@ -40,7 +40,6 @@ import {
 } from "react-icons/fi";
 import { SiUbuntu, SiLinux } from "react-icons/si";
 import { triggerResumeDownload } from "../../utils/getResume";
-import { SwarmIntro } from "../../components/SwarmIntro/SwarmIntro";
 import { SideNav } from "../../components/SideNav/SideNav";
 import { RightActionDock } from "../../components/RightActionDock/RightActionDock";
 import { UbuntuDownloadCenter } from "../../components/UbuntuDownloadCenter/UbuntuDownloadCenter";
@@ -49,17 +48,6 @@ import { Container, Row, Col, Alert, Modal, Button } from "react-bootstrap";
 
 export const Home = () => {
   const { t } = useTranslation();
-
-  // Swarm Intro state (Runs only on initial visit per browser session)
-  const [showIntro, setShowIntro] = useState(() => {
-    if (typeof window === "undefined") return false;
-    return !sessionStorage.getItem("has_seen_swarm_intro");
-  });
-
-  const handleIntroComplete = () => {
-    sessionStorage.setItem("has_seen_swarm_intro", "true");
-    setShowIntro(false);
-  };
 
   // Ubuntu Download Center Modal for Go Seeker
   const [showDownloadCenter, setShowDownloadCenter] = useState(false);
@@ -203,13 +191,10 @@ export const Home = () => {
 
   return (
     <HelmetProvider>
-      {/* 1. Futuristic 404 into Swarm of Agents Intro (Plays on initial visit only) */}
-      {showIntro && <SwarmIntro onComplete={handleIntroComplete} />}
-
-      {/* 2. Left Side-Center Floating Navigation Rail */}
+      {/* 1. Left Side-Center Floating Navigation Rail */}
       <SideNav />
 
-      {/* 3. Right Side Floating Action Hub */}
+      {/* 2. Right Side Floating Action Hub */}
       <RightActionDock />
 
       <main className="portfolio-master-canvas">
