@@ -41,22 +41,30 @@ export const ContactUs = () => {
     ticketCode: null,
   });
 
-  // Call health check APIs to both microservices upon navigating to contact page
+  // Call health check APIs to both microservices upon navigating to contact page,
+  // then repeat every 10 minutes while the user stays on the page (Render sleeps after 15 min idle)
   useEffect(() => {
     if (window.location.hash === "#report-ticket") {
       setActiveTab("ticket");
     }
 
-    pingMicroservices().then((results) => {
-      if (Array.isArray(results)) {
-        const backendRes = results.find((r) => r && r.name === "go-seek-backend");
-        const authRes = results.find((r) => r && r.name === "auth-service");
-        setCloudStatus({
-          backend: backendRes && backendRes.ok ? "online" : "waking",
-          auth: authRes && authRes.ok ? "online" : "waking",
-        });
-      }
-    });
+    const runHealthCheck = () =>
+      pingMicroservices().then((results) => {
+        if (Array.isArray(results)) {
+          const backendRes = results.find((r) => r && r.name === "go-seek-backend");
+          const authRes = results.find((r) => r && r.name === "auth-service");
+          setCloudStatus({
+            backend: backendRes && backendRes.ok ? "online" : "waking",
+            auth: authRes && authRes.ok ? "online" : "waking",
+          });
+        }
+      });
+
+    runHealthCheck();
+    const KEEP_ALIVE_INTERVAL_MS = 10 * 60 * 1000; // 10 minutes
+    const intervalId = setInterval(runHealthCheck, KEEP_ALIVE_INTERVAL_MS);
+
+    return () => clearInterval(intervalId);
   }, []);
 
   const handleContactChange = (e) => {
