@@ -253,7 +253,7 @@ function CursorCore({
     // Cursor Styles
     const styles = {
       cursorInner: {
-        zIndex: 999,
+        zIndex: 2147483647,
         display: 'block',
         position: 'fixed',
         borderRadius: '50%',
@@ -265,7 +265,7 @@ function CursorCore({
         transition: 'opacity 0.15s ease-in-out, transform 0.25s ease-in-out'
       },
       cursorOuter: {
-        zIndex: 999,
+        zIndex: 2147483647,
         display: 'block',
         position: 'fixed',
         borderRadius: '50%',

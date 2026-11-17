@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import "./style.css";
+import { Link } from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { meta, contactConfig } from "../../content_option";
 import { Container, Row, Col, Alert } from "react-bootstrap";
 import { useTranslation } from "react-i18next";
-import { FiMail, FiMessageSquare, FiAlertCircle, FiCheckCircle, FiSend, FiLifeBuoy, FiActivity } from "react-icons/fi";
+import { FiMail, FiMessageSquare, FiAlertCircle, FiCheckCircle, FiSend, FiLifeBuoy, FiActivity, FiArrowLeft } from "react-icons/fi";
 import { pingMicroservices } from "../../utils/healthCheck";
 
 export const ContactUs = () => {
@@ -44,8 +45,16 @@ export const ContactUs = () => {
   // Call health check APIs to both microservices upon navigating to contact page,
   // then repeat every 10 minutes while the user stays on the page (Render sleeps after 15 min idle)
   useEffect(() => {
-    if (window.location.hash === "#report-ticket") {
+    const searchParams = new URLSearchParams(window.location.search);
+    if (window.location.hash === "#report-ticket" || searchParams.get("tab") === "ticket") {
       setActiveTab("ticket");
+    }
+    if (searchParams.get("type") === "hire") {
+      setActiveTab("contact");
+      setContactData((prev) => ({
+        ...prev,
+        subject: prev.subject || "Consulting & Engineering Opportunity",
+      }));
     }
 
     const runHealthCheck = () =>
@@ -169,7 +178,15 @@ export const ContactUs = () => {
           <meta name="description" content={meta.description} />
         </Helmet>
 
-        <Row className="mb-4 mt-3 pt-md-3">
+        {/* Back Link */}
+        <div className="mb-3 pt-4">
+          <Link to="/" className="back-to-home-link d-inline-flex align-items-center text-decoration-none">
+            <FiArrowLeft className="me-2" />
+            <span>Back to Portfolio Overview</span>
+          </Link>
+        </div>
+
+        <Row className="mb-4 mt-2">
           <Col lg="10">
             <h1 className="display-4 mb-2">{t("contact_me")} &amp; Support</h1>
             <p className="text-muted contact-header-sub">

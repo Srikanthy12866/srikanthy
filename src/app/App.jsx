@@ -34,6 +34,10 @@ export default function App() {
 
   return (
     <Router basename={BASE_NAME}>
+      <ScrollToTop>
+        <Headermain />
+        <AppRoutes />
+      </ScrollToTop>
       <div className="cursor__dot">
         <AnimatedCursor
           innerSize={15}
@@ -44,10 +48,6 @@ export default function App() {
           outerScale={5}
         />
       </div>
-      <ScrollToTop>
-        <Headermain />
-        <AppRoutes />
-      </ScrollToTop>
     </Router>
   );
 }

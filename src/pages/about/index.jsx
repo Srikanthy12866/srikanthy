@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState } from "react";
 import "./style.css";
+import { Link } from "react-router-dom";
 import { Helmet, HelmetProvider } from "react-helmet-async";
 import { Container, Row, Col } from "react-bootstrap";
 import {
@@ -10,8 +11,8 @@ import {
   services,
   skillGroups,
 } from "../../content_option";
-import { useState } from "react";
 import { useTranslation } from 'react-i18next';
+import { FiArrowLeft } from "react-icons/fi";
 
 export const About = () => {
   const { t } = useTranslation();
@@ -24,7 +25,16 @@ export const About = () => {
           <title> About | {meta.title}</title>
           <meta name="description" content={meta.description} />
         </Helmet>
-        <Row className="mb-5 mt-3 pt-md-3">
+
+        {/* Back Link */}
+        <div className="mb-3 pt-4">
+          <Link to="/" className="back-to-home-link d-inline-flex align-items-center text-decoration-none">
+            <FiArrowLeft className="me-2" />
+            <span>Back to Portfolio Overview</span>
+          </Link>
+        </div>
+
+        <Row className="mb-4 mt-2">
           <Col lg="8">
             <h1 className="display-4 mb-4">{t('about_me_title')}</h1>
             <hr className="t_border my-4 ml-0 text-left" />

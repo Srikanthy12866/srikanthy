@@ -15,9 +15,7 @@ const NAV_ITEMS = [
   { id: "about", label: "About Me", icon: FiUser },
   { id: "experience", label: "Work Timeline", icon: FiBriefcase },
   { id: "skills", label: "Technical Skills", icon: FiCpu },
-  { id: "services", label: "Engineering Services", icon: FiLayers },
-  { id: "products", label: "Go Seeker", icon: FiPackage },
-  { id: "contact", label: "Contact & Tickets", icon: FiMail },
+  { id: "services", label: "Architecture & Services", icon: FiLayers },
 ];
 
 export const SideNav = () => {

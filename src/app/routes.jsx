@@ -4,7 +4,7 @@ import { Home } from "../pages/home";
 import { Products } from "../pages/products";
 import { ContactUs } from "../pages/contact";
 import { About } from "../pages/about";
-import { Socialicons } from "../components/socialicons";
+import { Suggestion } from "../pages/suggestion";
 
 function AppRoutes() {
   const location = useLocation();
@@ -17,9 +17,9 @@ function AppRoutes() {
         <Route path="/portfolio" element={<Navigate to="/products" replace />} />
         <Route path="/about" element={<About />} />
         <Route path="/contact" element={<ContactUs />} />
+        <Route path="/suggestion" element={<Suggestion />} />
         <Route path="*" element={<Navigate to="/" replace />} />
       </Routes>
-      <Socialicons />
     </div>
   );
 }

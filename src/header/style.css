@@ -44,7 +44,7 @@
 .br-right,
 .br-left {
     position: fixed;
-    z-index: 999999;
+    z-index: 800;
     background: var(--primary-color);
     pointer-events: none;
 }
