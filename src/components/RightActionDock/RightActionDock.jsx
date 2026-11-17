@@ -9,17 +9,12 @@ import {
   FiAlertCircle,
   FiHelpCircle,
   FiGithub,
-  FiLinkedin,
-  FiInstagram,
-  FiFacebook,
-  FiShare2,
 } from "react-icons/fi";
 import { triggerResumeDownload } from "../../utils/getResume";
 import { socialprofils } from "../../content_option";
 
 export const RightActionDock = () => {
   const [downloading, setDownloading] = useState(false);
-  const [showSocials, setShowSocials] = useState(false);
 
   // Resume Download Handler
   const handleDownload = async () => {
@@ -114,61 +109,6 @@ export const RightActionDock = () => {
           <FiGithub className="action-icon" />
           <span className="action-tooltip">GitHub Profile</span>
         </a>
-
-        {/* 8. Social Hub Toggle (Instagram, Facebook, LinkedIn) */}
-        <div className="social-hub-wrapper">
-          <button
-            className={`action-btn ${showSocials ? "active" : ""}`}
-            onClick={() => setShowSocials(!showSocials)}
-            title="Social Media Profiles"
-            aria-label="Social Media"
-          >
-            <FiShare2 className="action-icon" />
-            <span className="action-tooltip">Socials</span>
-          </button>
-
-          {/* Social Flyout */}
-          {showSocials && (
-            <div className="social-flyout">
-              <a
-                href={socialprofils.linkedin}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-sub-btn"
-                title="LinkedIn"
-              >
-                <FiLinkedin />
-              </a>
-              <a
-                href={socialprofils.github}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-sub-btn"
-                title="GitHub"
-              >
-                <FiGithub />
-              </a>
-              <a
-                href={socialprofils.instagram}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-sub-btn"
-                title="Instagram"
-              >
-                <FiInstagram />
-              </a>
-              <a
-                href={socialprofils.facebook}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="social-sub-btn"
-                title="Facebook"
-              >
-                <FiFacebook />
-              </a>
-            </div>
-          )}
-        </div>
       </div>
     </aside>
   );

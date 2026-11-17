@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "./style.css";
 import {
   FiTerminal,
@@ -6,9 +6,13 @@ import {
   FiBriefcase,
   FiCpu,
   FiLayers,
-  FiPackage,
-  FiMail,
+  FiShare2,
+  FiLinkedin,
+  FiGithub,
+  FiInstagram,
+  FiFacebook,
 } from "react-icons/fi";
+import { socialprofils } from "../../content_option";
 
 const NAV_ITEMS = [
   { id: "hero", label: "Intro", icon: FiTerminal },
@@ -20,6 +24,8 @@ const NAV_ITEMS = [
 
 export const SideNav = () => {
   const [activeSection, setActiveSection] = useState("hero");
+  const [showSocials, setShowSocials] = useState(false);
+  const socialWrapperRef = useRef(null);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -48,6 +54,17 @@ export const SideNav = () => {
     handleScroll();
 
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Close flyout only when clicking completely outside the dock
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (socialWrapperRef.current && !socialWrapperRef.current.contains(e.target)) {
+        setShowSocials(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   const scrollTo = (id) => {
@@ -80,6 +97,77 @@ export const SideNav = () => {
             </button>
           );
         })}
+
+        {/* Subtle separator */}
+        <div className="dock-divider"></div>
+
+        {/* Social Hub Icon switched to Left side dock */}
+        <div className="left-social-wrapper" ref={socialWrapperRef}>
+          <button
+            type="button"
+            className={`dock-nav-item social-toggle-btn ${showSocials ? "active" : ""}`}
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowSocials((prev) => !prev);
+            }}
+            title="Social Profiles"
+            aria-label="Social Profiles"
+          >
+            <span className="dock-icon-wrapper">
+              <FiShare2 className="dock-icon" />
+            </span>
+            <span className="dock-tooltip">Socials</span>
+          </button>
+
+          {/* Social Flyout: maintained and visible when clicked */}
+          {showSocials && (
+            <div
+              className="left-social-flyout"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <a
+                href={socialprofils.linkedin}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-sub-btn"
+                title="LinkedIn"
+                aria-label="LinkedIn"
+              >
+                <FiLinkedin />
+              </a>
+              <a
+                href={socialprofils.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-sub-btn"
+                title="GitHub"
+                aria-label="GitHub"
+              >
+                <FiGithub />
+              </a>
+              <a
+                href={socialprofils.instagram}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-sub-btn"
+                title="Instagram"
+                aria-label="Instagram"
+              >
+                <FiInstagram />
+              </a>
+              <a
+                href={socialprofils.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="social-sub-btn"
+                title="Facebook"
+                aria-label="Facebook"
+              >
+                <FiFacebook />
+              </a>
+            </div>
+          )}
+        </div>
       </div>
     </aside>
   );
