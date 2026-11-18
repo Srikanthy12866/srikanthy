@@ -196,3 +196,105 @@ code {
     color: var(--text-color-2);
     max-width: 650px;
 }
+
+/* ==========================================================================
+   UNIVERSAL ROUNDED EDGES DESIGN SYSTEM
+   ========================================================================== */
+:root {
+    --radius-xs: 8px;
+    --radius-sm: 12px;
+    --radius-md: 16px;
+    --radius-lg: 24px;
+    --radius-xl: 32px;
+    --radius-full: 9999px;
+}
+
+/* Universal Button Rounding */
+.btn,
+button:not(.menu__button),
+.custom-btn,
+.action-btn,
+.modal-action-btn,
+.category-btn,
+.btn-action-deb,
+.btn-action-view,
+.modal-footer-custom button {
+    border-radius: var(--radius-full) !important;
+}
+
+/* Universal Card & Panel Rounding */
+.card,
+.content-card,
+.suggestion-card,
+.contact-form-wrap,
+.ticket-form-wrap,
+.contact-info-card,
+.product-card-custom,
+.product-hero-card,
+.product-preview-box,
+.timeline-card,
+.service-card,
+.ubuntu-card,
+.guide-card,
+.modal-content {
+    border-radius: var(--radius-lg) !important;
+}
+
+/* Universal Form & Input Rounding */
+.form-control,
+.form-select,
+.custom-input,
+.products-search-input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="search"],
+textarea,
+select {
+    border-radius: var(--radius-md) !important;
+}
+
+/* Universal Badges, Chips & Pills */
+.badge,
+.section-tag,
+.specialty-badge,
+.skill-chip,
+.metric-chip,
+.lang-pill,
+.status-pill,
+.contact-backend-pill,
+.product-badge-os,
+.filter-btn,
+.nav-tab-btn,
+.contact-mode-btn,
+.contact-mode-tabs {
+    border-radius: var(--radius-full) !important;
+}
+
+/* Universal Alert Rounding */
+.alert {
+    border-radius: var(--radius-md) !important;
+}
+
+/* Universal Progress Bar Rounding */
+.progress,
+.progress-bar,
+.skill-bar-outer,
+.skill-bar-inner {
+    border-radius: var(--radius-full) !important;
+}
+
+/* Universal Image Rounding */
+.hero-avatar,
+.hero-photo-frame,
+.product-image-wrapper {
+    border-radius: var(--radius-xl) !important;
+    overflow: hidden;
+}
+
+/* Universal Code Block Rounding */
+pre,
+code,
+.terminal-block {
+    border-radius: var(--radius-sm) !important;
+}

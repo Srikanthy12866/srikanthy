@@ -31,8 +31,7 @@
     background: radial-gradient(circle at 75% 30%, var(--accent-glow) 0%, transparent 60%);
 }
 
-.specialty-badge,
-.agentic-badge {
+.specialty-badge {
     display: inline-flex;
     align-items: center;
     background: var(--badge-bg);
@@ -122,8 +121,7 @@
 }
 
 /* Hero Avatar / Image Frame */
-.hero-photo-frame,
-.agentic-photo-frame {
+.hero-photo-frame {
     position: relative;
     display: inline-block;
     max-width: 440px;
