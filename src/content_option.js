@@ -11,16 +11,16 @@ const introdata = {
         first: "Full-Stack Software Engineer",
         second: "Spring Boot Microservices Architect",
         third: "Distributed Systems & REST APIs",
-        fourth: "Cloud Native & Microservices Architect",
+        fourth: "Full-Stack Enterprise Architect",
         fifth: "High-Performance React Architectures",
     },
-    description: "Engineering scalable Spring Boot microservices, robust REST APIs, and high-performance React applications. Experienced in Warehouse Management Systems (WMS), Linux kernel sysfs telemetry, and resilient cloud architectures.",
+    description: "Engineering scalable Spring Boot microservices, robust REST APIs, and high-performance React applications. Experienced in Warehouse Management Systems (WMS), Linux kernel sysfs telemetry, and resilient enterprise architectures.",
     your_img_url: "https://images.unsplash.com/photo-1514790193030-c89d266d5a9d",
     highlights: [
         { label: "Core Focus", val: "Microservices & Distributed Systems" },
         { label: "Backend", val: "Spring Boot 3, Java 17, MySQL" },
         { label: "Frontend", val: "React.js, Redux, Electron" },
-        { label: "Domains", val: "WMS, Host Telemetry, Cloud Systems" },
+        { label: "Domains", val: "WMS, Host Telemetry, Enterprise Systems" },
     ]
 };
 
@@ -65,14 +65,14 @@ const skillGroups = {
     Core: ["Distributed Systems", "Microservices", "Java", "Spring Boot", "React.js", "SQL", "Git"],
     Backend: ["Spring Boot 3", "Spring Security (JWT)", "Spring Data JPA", "Hibernate", "RESTful APIs", "Microservices Architecture"],
     Frontend: ["React.js", "Redux", "Bootstrap", "Material UI", "Electron IPC", "HTML5 & CSS3"],
-    DatabaseAndCloud: ["MySQL", "Docker", "Clever Cloud", "TiDB Cloud", "Supabase"],
+    DatabasesAndDevOps: ["MySQL", "Docker", "PostgreSQL", "Git", "Maven"],
     Tools: ["Maven", "IntelliJ IDEA", "VS Code", "GitHub Actions", "Postman"],
     Domains: ["Warehouse Management Systems (WMS)", "Inventory & Order Logistics", "Host Diagnostics Telemetry", "SDLC"],
 };
 
 const services = [
     {
-        title: "Distributed Microservices & Cloud Systems",
+        title: "Distributed Microservices & Backend Systems",
         description:
             "Design and build resilient, distributed backend microservices with Java and Spring Boot, secure JWT authentication, and high-throughput RESTful endpoints.",
     },

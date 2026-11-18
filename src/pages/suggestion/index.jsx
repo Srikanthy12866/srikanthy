@@ -32,7 +32,7 @@ export const Suggestion = () => {
       });
 
       if (!response.ok) {
-        throw new Error("Failed to send suggestion to cloud backend.");
+        throw new Error("Failed to send suggestion.");
       }
 
       setAlert({
@@ -101,7 +101,7 @@ export const Suggestion = () => {
                     {[
                       { label: "Product (Go Seeker)", icon: FiPackage },
                       { label: "Portfolio Website", icon: FiGlobe },
-                      { label: "Architecture / Cloud Feature", icon: FiZap },
+                      { label: "Architecture / Core Feature", icon: FiZap },
                     ].map((item) => {
                       const Icon = item.icon;
                       return (

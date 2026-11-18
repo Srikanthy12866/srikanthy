@@ -500,7 +500,7 @@ export const Products = () => {
                         <FiLayers className="me-2 text-info" />
                         {t("tech_stack")}
                       </h4>
-                      <div className="modal-tech-cloud">
+                      <div className="modal-tech-tags">
                         {activeProduct.techStack.map((tech, idx) => (
                           <span key={idx} className="modal-tech-pill">
                             {tech}

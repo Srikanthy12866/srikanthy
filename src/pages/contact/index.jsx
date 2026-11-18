@@ -31,7 +31,7 @@ export const ContactUs = () => {
   });
 
   const [loading, setLoading] = useState(false);
-  const [cloudStatus, setCloudStatus] = useState({
+  const [systemStatus, setSystemStatus] = useState({
     backend: "checking", // "checking", "online", "waking"
     auth: "checking",
   });
@@ -62,7 +62,7 @@ export const ContactUs = () => {
         if (Array.isArray(results)) {
           const backendRes = results.find((r) => r && r.name === "go-seek-backend");
           const authRes = results.find((r) => r && r.name === "auth-service");
-          setCloudStatus({
+          setSystemStatus({
             backend: backendRes && backendRes.ok ? "online" : "waking",
             auth: authRes && authRes.ok ? "online" : "waking",
           });
@@ -197,9 +197,9 @@ export const ContactUs = () => {
               <span className="small text-muted d-flex align-items-center">
                 <FiActivity className="me-1 text-primary" /> Service Status:
               </span>
-              <span className={`badge ${cloudStatus.backend === "online" && cloudStatus.auth === "online" ? "bg-success" : "bg-warning text-dark"} d-inline-flex align-items-center`}>
+              <span className={`badge ${systemStatus.backend === "online" && systemStatus.auth === "online" ? "bg-success" : "bg-warning text-dark"} d-inline-flex align-items-center`}>
                 <span className="status-dot me-1">●</span>
-                {cloudStatus.backend === "online" && cloudStatus.auth === "online" ? "All Systems Operational" : "Connecting..."}
+                {systemStatus.backend === "online" && systemStatus.auth === "online" ? "All Systems Operational" : "Connecting..."}
               </span>
             </div>
           </Col>

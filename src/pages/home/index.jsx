@@ -80,7 +80,7 @@ export const Home = () => {
   });
 
   // Microservice Health State
-  const [cloudStatus, setCloudStatus] = useState({
+  const [systemStatus, setSystemStatus] = useState({
     backend: "checking",
     auth: "checking",
   });
@@ -92,7 +92,7 @@ export const Home = () => {
         if (Array.isArray(results)) {
           const backendRes = results.find((r) => r && r.name === "go-seek-backend");
           const authRes = results.find((r) => r && r.name === "auth-service");
-          setCloudStatus({
+          setSystemStatus({
             backend: backendRes && backendRes.ok ? "online" : "waking",
             auth: authRes && authRes.ok ? "online" : "waking",
           });
@@ -311,7 +311,7 @@ export const Home = () => {
                     <div className="about-bullet">
                       <FiCheckCircle className="bullet-icon text-primary" />
                       <div>
-                        <strong>Distributed Systems &amp; Concurrency:</strong> Multi-threaded Spring services, asynchronous message queues, and high-availability cloud architecture.
+                        <strong>Distributed Systems &amp; Concurrency:</strong> Multi-threaded Spring services, asynchronous message queues, and high-availability enterprise architecture.
                       </div>
                     </div>
                   </div>
@@ -627,11 +627,11 @@ export const Home = () => {
                 </span>
                 <span
                   className={`badge ${
-                    cloudStatus.backend === "online" && cloudStatus.auth === "online" ? "bg-success" : "bg-warning text-dark"
+                    systemStatus.backend === "online" && systemStatus.auth === "online" ? "bg-success" : "bg-warning text-dark"
                   } d-inline-flex align-items-center`}
                 >
                   <span className="status-dot me-1">●</span>
-                  {cloudStatus.backend === "online" && cloudStatus.auth === "online" ? "All Systems Operational" : "Connecting..."}
+                  {systemStatus.backend === "online" && systemStatus.auth === "online" ? "All Systems Operational" : "Connecting..."}
                 </span>
               </div>
             </div>
@@ -657,7 +657,7 @@ export const Home = () => {
                       <FiTerminal className="info-icon text-primary" />
                       <div>
                         <div className="label">Architecture</div>
-                        <span className="value">High-Availability Cloud Microservices</span>
+                        <span className="value">High-Availability Enterprise Microservices</span>
                       </div>
                     </div>
 
@@ -785,7 +785,7 @@ export const Home = () => {
                             disabled={formLoading}
                           >
                             <FiSend className="me-2" />
-                            <span>{formLoading ? "Sending to Cloud Backend..." : "Send Message"}</span>
+                            <span>{formLoading ? "Sending Message..." : "Send Message"}</span>
                           </button>
                         </Col>
                       </Row>
