@@ -101,7 +101,7 @@ export const Suggestion = () => {
                     {[
                       { label: "Product (Go Seeker)", icon: FiPackage },
                       { label: "Portfolio Website", icon: FiGlobe },
-                      { label: "Architecture / AI Feature", icon: FiZap },
+                      { label: "Architecture / Cloud Feature", icon: FiZap },
                     ].map((item) => {
                       const Icon = item.icon;
                       return (

@@ -211,9 +211,9 @@ export const Home = () => {
           <Container>
             <Row className="align-items-center min-vh-100 py-5">
               <Col lg="6" className="order-2 order-lg-1 hero-content-col">
-                <div className="agentic-badge mb-3">
+                <div className="specialty-badge mb-3">
                   <FiCpu className="spin-slow text-primary me-2" />
-                  <span>MULTI-AGENTIC SYSTEMS &amp; SPRING BOOT ARCHITECT</span>
+                  <span>DISTRIBUTED SYSTEMS &amp; SPRING BOOT ARCHITECT</span>
                 </div>
 
                 <h1 className="hero-name">{introdata.title}</h1>
@@ -249,9 +249,9 @@ export const Home = () => {
                 </div>
               </Col>
 
-              {/* Srikanth's Image with Cyber Agentic Frame */}
+              {/* Srikanth's Image with Modern Frame */}
               <Col lg="6" className="order-1 order-lg-2 text-center hero-image-col mb-4 mb-lg-0">
-                <div className="agentic-photo-frame">
+                <div className="hero-photo-frame">
                   <div
                     className="hero-avatar"
                     style={{ backgroundImage: `url(${blackAndWhiteImage})` }}
@@ -279,7 +279,7 @@ export const Home = () => {
               </span>
               <h2 className="section-heading">About Me &amp; Core Philosophy</h2>
               <p className="section-subheading">
-                Specializing in distributed backend microservices, resilient event pipelines, and autonomous multi-agent software.
+                Specializing in distributed backend microservices, resilient event pipelines, and scalable enterprise software.
               </p>
             </div>
 
@@ -311,7 +311,7 @@ export const Home = () => {
                     <div className="about-bullet">
                       <FiCheckCircle className="bullet-icon text-primary" />
                       <div>
-                        <strong>Multi-Agentic AI Systems:</strong> Coordinating autonomous LLM agent clusters with tool-use contracts and self-healing loops.
+                        <strong>Distributed Systems &amp; Concurrency:</strong> Multi-threaded Spring services, asynchronous message queues, and high-availability cloud architecture.
                       </div>
                     </div>
                   </div>
@@ -897,7 +897,7 @@ export const Home = () => {
         <footer className="py-4 text-center text-muted border-top border-secondary-subtle">
           <Container>
             <p className="m-0 small">
-              &copy; {new Date().getFullYear()} Srikanth Yepalagunta · Multi-Agentic Systems Architect · Powered by Spring Boot 3 &amp; React.
+              &copy; {new Date().getFullYear()} Srikanth Yepalagunta · Full-Stack Systems Architect · Powered by Spring Boot 3 &amp; React.
             </p>
           </Container>
         </footer>

@@ -1,32 +1,32 @@
 const logotext = "Srikanth";
 const meta = {
-    title: "Yepalagunta Srikanth | Full-Stack & Multi-Agentic Systems Engineer",
-    description: "Software Engineer specializing in Multi-Agentic AI Architecture, Spring Boot Microservices, and Modern React Systems. Building high-performance, resilient distributed software.",
+    title: "Yepalagunta Srikanth | Full-Stack & Distributed Systems Engineer",
+    description: "Software Engineer specializing in Distributed Systems, Spring Boot Microservices, and Modern React Applications. Building high-performance, resilient software.",
 };
 
 const introdata = {
     title: "I’m Yepalagunta Srikanth",
-    subtitle: "Software Engineer & Multi-Agentic Systems Architect",
+    subtitle: "Software Engineer & Distributed Systems Architect",
     animated: {
-        first: "Multi-Agentic System Developer",
+        first: "Full-Stack Software Engineer",
         second: "Spring Boot Microservices Architect",
         third: "Distributed Systems & REST APIs",
-        fourth: "Autonomous AI Workflows & Tool-Use",
+        fourth: "Cloud Native & Microservices Architect",
         fifth: "High-Performance React Architectures",
     },
-    description: "Engineering scalable Spring Boot microservices, autonomous multi-agentic AI workflows, and high-performance React applications. Experienced in Warehouse Management Systems (WMS), Linux kernel sysfs telemetry, and resilient cloud architectures.",
+    description: "Engineering scalable Spring Boot microservices, robust REST APIs, and high-performance React applications. Experienced in Warehouse Management Systems (WMS), Linux kernel sysfs telemetry, and resilient cloud architectures.",
     your_img_url: "https://images.unsplash.com/photo-1514790193030-c89d266d5a9d",
     highlights: [
-        { label: "Core Focus", val: "Multi-Agentic & Microservices" },
+        { label: "Core Focus", val: "Microservices & Distributed Systems" },
         { label: "Backend", val: "Spring Boot 3, Java 17, MySQL" },
         { label: "Frontend", val: "React.js, Redux, Electron" },
-        { label: "Domains", val: "WMS, Host Telemetry, Autonomous AI" },
+        { label: "Domains", val: "WMS, Host Telemetry, Cloud Systems" },
     ]
 };
 
 const dataabout = {
     title: "a bit about myself",
-    aboutme: "Software Engineer with deep experience in Warehouse Management Systems (WMS), Inventory & Order Management, and Autonomous Multi-Agentic AI systems. Skilled in architecting microservices and RESTful APIs with Java and Spring Boot, and responsive frontends using React.js and Redux. Passionate about distributed computing, database optimization with MySQL, and building reliable systems across the SDLC.",
+    aboutme: "Software Engineer with deep experience in Warehouse Management Systems (WMS), Inventory & Order Management, and Distributed Enterprise Systems. Skilled in architecting microservices and RESTful APIs with Java and Spring Boot, and responsive frontends using React.js and Redux. Passionate about distributed computing, database optimization with MySQL, and building reliable systems across the SDLC.",
 };
 
 const worktimeline = [
@@ -43,7 +43,7 @@ const worktimeline = [
 ];
 
 const skills = [
-    { name: "Multi-Agentic AI Systems", value: 95 },
+    { name: "Distributed Microservices", value: 95 },
     { name: "Microservices", value: 90 },
     { name: "Java 17", value: 92 },
     { name: "Spring Boot", value: 90 },
@@ -62,7 +62,7 @@ const skills = [
 ];
 
 const skillGroups = {
-    Core: ["Multi-Agentic AI", "Microservices", "Java", "Spring Boot", "React.js", "SQL", "Git"],
+    Core: ["Distributed Systems", "Microservices", "Java", "Spring Boot", "React.js", "SQL", "Git"],
     Backend: ["Spring Boot 3", "Spring Security (JWT)", "Spring Data JPA", "Hibernate", "RESTful APIs", "Microservices Architecture"],
     Frontend: ["React.js", "Redux", "Bootstrap", "Material UI", "Electron IPC", "HTML5 & CSS3"],
     DatabaseAndCloud: ["MySQL", "Docker", "Clever Cloud", "TiDB Cloud", "Supabase"],
@@ -72,9 +72,9 @@ const skillGroups = {
 
 const services = [
     {
-        title: "Multi-Agentic AI & Autonomous Workflows",
+        title: "Distributed Microservices & Cloud Systems",
         description:
-            "Design and build autonomous multi-agentic architectures with specialized agent roles, inter-agent coordination, tool execution pipelines, and automated self-healing workflows.",
+            "Design and build resilient, distributed backend microservices with Java and Spring Boot, secure JWT authentication, and high-throughput RESTful endpoints.",
     },
     {
         title: "Microservices & Distributed Architecture",
