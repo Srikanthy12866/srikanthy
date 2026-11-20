@@ -18,6 +18,7 @@ import {
 import { SiUbuntu, SiDebian, SiLinux } from "react-icons/si";
 import {
   fetchGithubRepoDetails,
+  HOSTED_PACKAGE_FOLDERS,
   timeAgo,
 } from "../../utils/githubService";
 
@@ -32,6 +33,7 @@ export const UbuntuDownloadCenter = ({
   const [refreshing, setRefreshing] = useState(false);
   const [activeTab, setActiveTab] = useState("deb"); // 'deb' | 'appimage' | 'source' | 'telemetry'
   const [arch, setArch] = useState("amd64"); // 'amd64' | 'arm64'
+  const [selectedVersionId, setSelectedVersionId] = useState(null);
   const [copiedId, setCopiedId] = useState(null);
   const [notification, setNotification] = useState(null);
 
@@ -39,7 +41,7 @@ export const UbuntuDownloadCenter = ({
   const [forceUbuntuView, setForceUbuntuView] = useState(isUbuntuDetected);
 
   const repoUrl =
-    product?.github || "https://github.com/Srikanthy12866/DEEP_HARDWARE_SEEKER";
+    product?.github || "https://github.com/Srikanthy12866/Go-Seek";
 
   const loadData = useCallback(
     async (isManualRefresh = false) => {
@@ -49,6 +51,13 @@ export const UbuntuDownloadCenter = ({
       try {
         const data = await fetchGithubRepoDetails(repoUrl);
         setGithubData(data);
+        if (data?.versionPackages?.length > 0) {
+          setSelectedVersionId((prev) =>
+            prev && data.versionPackages.some((v) => v.id === prev)
+              ? prev
+              : data.versionPackages[0].id
+          );
+        }
       } catch (err) {
         console.error("Failed to fetch GitHub details:", err);
       } finally {
@@ -116,16 +125,31 @@ export const UbuntuDownloadCenter = ({
     link.remove();
   };
 
-  const version = githubData?.version || "0.1.0";
+  const versionPackages = githubData?.versionPackages || [];
+  const activeVersionEntry =
+    versionPackages.find((v) => v.id === selectedVersionId) ||
+    versionPackages[0] ||
+    null;
+
+  const version = activeVersionEntry?.version || githubData?.version || "0.1.1";
   const productName =
-    githubData?.productName || product?.title || "Fieldnote Device Report";
+    activeVersionEntry?.productName ||
+    githubData?.productName ||
+    product?.title ||
+    "Go Seek";
   const commit = githubData?.latestCommit || {};
   const debFile =
-    githubData?.availableFiles?.find((f) => f.type === "deb") || {};
+    activeVersionEntry?.deb ||
+    githubData?.availableFiles?.find((f) => f.type === "deb") ||
+    {};
   const appImageFile =
-    githubData?.availableFiles?.find((f) => f.type === "appimage") || {};
+    activeVersionEntry?.appimage ||
+    githubData?.availableFiles?.find((f) => f.type === "appimage") ||
+    {};
   const sourceFile =
-    githubData?.availableFiles?.find((f) => f.type === "source") || {};
+    activeVersionEntry?.source ||
+    githubData?.availableFiles?.find((f) => f.type === "source") ||
+    {};
 
   return (
     <div className="ubuntu-download-center" id="ubuntu-download-center">
@@ -268,6 +292,30 @@ export const UbuntuDownloadCenter = ({
               <span className="version-pill">
                 v{version} (package.json)
               </span>
+
+              <a
+                href={HOSTED_PACKAGE_FOLDERS.dpkgsFolderUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="repo-link-badge"
+                title="Open hosted dpkgs (.deb) versions folder"
+              >
+                <SiDebian className="me-1" />
+                dpkgs Folder
+                <FiExternalLink className="ms-1 small" />
+              </a>
+
+              <a
+                href={HOSTED_PACKAGE_FOLDERS.appImagesFolderUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="repo-link-badge"
+                title="Open hosted AppImages versions folder"
+              >
+                <SiLinux className="me-1" />
+                AppImages Folder
+                <FiExternalLink className="ms-1 small" />
+              </a>
             </div>
 
             <button
@@ -288,41 +336,67 @@ export const UbuntuDownloadCenter = ({
       {/* Main Files & Details Section */}
       {(isUbuntuDetected || forceUbuntuView) && (
         <div className="ubuntu-content-area">
-          {/* Architecture Switcher */}
-          <div className="arch-selector-bar mb-3 d-flex justify-content-between align-items-center flex-wrap gap-2">
-            <span className="arch-label text-muted small fw-bold">
-              TARGET HARDWARE ARCHITECTURE:
-            </span>
-            <div className="btn-group btn-group-sm arch-toggle-group">
-              <button
-                type="button"
-                className={`btn ${
-                  arch === "amd64" ? "btn-primary" : "btn-outline-secondary"
-                }`}
-                onClick={() => setArch("amd64")}
-              >
-                x86_64 / amd64 (Standard PC & Laptops)
-              </button>
-              <button
-                type="button"
-                className={`btn ${
-                  arch === "arm64" ? "btn-primary" : "btn-outline-secondary"
-                }`}
-                onClick={() => setArch("arm64")}
-              >
-                arm64 (Raspberry Pi 4/5 & ARM Linux)
-              </button>
+          {/* Architecture & Version Switcher Bar */}
+          <div className="arch-selector-bar mb-3 d-flex justify-content-between align-items-center flex-wrap gap-3">
+            <div className="d-flex align-items-center gap-2 flex-wrap">
+              <span className="arch-label text-muted small fw-bold">
+                PACKAGE VERSION ({versionPackages.length} IN GITHUB):
+              </span>
+              <div className="version-selector-pills d-flex flex-wrap gap-1">
+                {versionPackages.map((vp) => (
+                  <button
+                    key={vp.id}
+                    type="button"
+                    className={`btn btn-sm version-select-btn ${
+                      activeVersionEntry?.id === vp.id
+                        ? "btn-primary"
+                        : "btn-outline-secondary"
+                    }`}
+                    onClick={() => setSelectedVersionId(vp.id)}
+                    title={vp.releaseTitle}
+                  >
+                    <FiLayers className="me-1" />
+                    {vp.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            <div className="d-flex align-items-center gap-2 flex-wrap">
+              <span className="arch-label text-muted small fw-bold">
+                ARCHITECTURE:
+              </span>
+              <div className="btn-group btn-group-sm arch-toggle-group">
+                <button
+                  type="button"
+                  className={`btn ${
+                    arch === "amd64" ? "btn-primary" : "btn-outline-secondary"
+                  }`}
+                  onClick={() => setArch("amd64")}
+                >
+                  x86_64 / amd64 (PC & Laptops)
+                </button>
+                <button
+                  type="button"
+                  className={`btn ${
+                    arch === "arm64" ? "btn-primary" : "btn-outline-secondary"
+                  }`}
+                  onClick={() => setArch("arm64")}
+                >
+                  arm64 (Raspberry Pi & ARM)
+                </button>
+              </div>
             </div>
           </div>
 
           {/* Available Files Cards Grid */}
           <div className="available-files-grid mb-4">
-            {/* 1. Debian Package (.deb) */}
+            {/* 1. Debian Package (.deb / dpkg) */}
             <div className="file-download-card deb-card">
               <div className="card-top-badge">
                 <span className="badge-chip deb-chip">
                   <SiDebian className="me-1" />
-                  Official .deb Package
+                  Official dpkg (.deb) • v{version}
                 </span>
                 <span className="badge-chip arch-chip">{arch}</span>
               </div>
@@ -339,28 +413,94 @@ export const UbuntuDownloadCenter = ({
                     <code>
                       {arch === "arm64" && debFile.arm64FileName
                         ? debFile.arm64FileName
-                        : debFile.fileName || "Fieldnote-Device-Report-0.1.0-amd64.deb"}
+                        : debFile.fileName || `go-seek-${version}-amd64.deb`}
                     </code>
                   </p>
                   <p className="file-specs text-muted small mb-0">
-                    Size: {debFile.size || "~85.2 MB"} • Format: Debian Binary (.deb)
+                    Size: {debFile.size || "~115.0 MB"} • Format: Debian dpkg (.deb)
                   </p>
                 </div>
               </div>
 
-              <p className="file-description small text-muted my-3">
+              <p className="file-description small text-muted my-2">
                 Pre-compiled native Ubuntu installer with desktop integration, system
                 service hooks, and sandboxed Electron kernel telemetry collector.
               </p>
+
+              {/* All GitHub dpkg (.deb) versions list inside card */}
+              {versionPackages.length > 0 && (
+                <div className="card-versions-box mb-3">
+                  <div className="card-versions-header small fw-bold text-muted mb-1">
+                    All GitHub dpkg (.deb) Versions ({arch}):
+                  </div>
+                  <div className="card-versions-list">
+                    {versionPackages.map((vp) => {
+                      const vDeb = vp.deb;
+                      const fName =
+                        arch === "arm64" && vDeb.arm64FileName
+                          ? vDeb.arm64FileName
+                          : vDeb.fileName;
+                      const isSelected = activeVersionEntry?.id === vp.id;
+                      return (
+                        <div
+                          key={vp.id}
+                          className={`card-version-item ${isSelected ? "selected" : ""}`}
+                          onClick={() => setSelectedVersionId(vp.id)}
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") setSelectedVersionId(vp.id);
+                          }}
+                        >
+                          <div className="card-version-info">
+                            <span className="card-version-tag">
+                              v{vp.version}
+                              {vp.isLatest ? " (Latest)" : vp.tagName ? ` (${vp.tagName})` : ""}
+                            </span>
+                            <code className="card-version-file">{fName}</code>
+                          </div>
+                          <div className="card-version-actions" onClick={(e) => e.stopPropagation()}>
+                            <button
+                              type="button"
+                              className="btn btn-xs btn-outline-primary"
+                              onClick={() => {
+                                setSelectedVersionId(vp.id);
+                                handleDownloadFile(vDeb);
+                              }}
+                              title={`Download ${fName}`}
+                            >
+                              <FiDownload />
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-xs btn-outline-secondary"
+                              onClick={() =>
+                                handleCopy(`sudo dpkg -i ${fName}`, `copy-deb-${vp.id}`)
+                              }
+                              title={`Copy sudo dpkg -i ${fName}`}
+                            >
+                              {copiedId === `copy-deb-${vp.id}` ? (
+                                <FiCheck className="text-success" />
+                              ) : (
+                                <FiCopy />
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
+              )}
 
               <div className="file-actions-row">
                 <button
                   className="btn btn-primary download-file-btn"
                   onClick={() => handleDownloadFile(debFile)}
-                  title="Download .deb package"
+                  title="Download selected .deb package"
                 >
                   <FiDownload className="me-2" />
-                  Download .deb ({arch})
+                  Download v{version} .deb ({arch})
                 </button>
 
                 <button
@@ -370,7 +510,7 @@ export const UbuntuDownloadCenter = ({
                       `sudo dpkg -i ${
                         arch === "arm64" && debFile.arm64FileName
                           ? debFile.arm64FileName
-                          : debFile.fileName || "Fieldnote-Device-Report-0.1.0-amd64.deb"
+                          : debFile.fileName || `go-seek-${version}-amd64.deb`
                       }`,
                       "copy-deb-btn"
                     )
@@ -395,7 +535,7 @@ export const UbuntuDownloadCenter = ({
               <div className="card-top-badge">
                 <span className="badge-chip appimage-chip">
                   <SiLinux className="me-1" />
-                  Standalone App (.AppImage)
+                  Standalone (.AppImage) • v{version}
                 </span>
                 <span className="badge-chip portable-chip">Zero Install</span>
               </div>
@@ -410,52 +550,115 @@ export const UbuntuDownloadCenter = ({
                   </h4>
                   <p className="file-filename mb-1">
                     <code>
-                      {appImageFile.fileName ||
-                        "Fieldnote-Device-Report-0.1.0-x86_64.AppImage"}
+                      {arch === "arm64" && appImageFile.arm64FileName
+                        ? appImageFile.arm64FileName
+                        : appImageFile.fileName ||
+                          `go-seek-${version}-x86_64.AppImage`}
                     </code>
                   </p>
                   <p className="file-specs text-muted small mb-0">
-                    Size: {appImageFile.size || "~92.4 MB"} • Format: Linux Executable
+                    Size: {appImageFile.size || "~140.0 MB"} • Format: Linux AppImage
                   </p>
                 </div>
               </div>
 
-              <p className="file-description small text-muted my-3">
+              <p className="file-description small text-muted my-2">
                 Single-file portable binary. Runs directly without root privileges.
                 Self-contained with all Electron runtimes and hardware readers.
               </p>
 
-              {!appImageFile.isAvailable && (
-                <p className="small text-warning mb-3">
-                  The repository currently has no published AppImage asset. The button
-                  below opens the latest release page instead of starting a broken download.
-                </p>
+              {/* All GitHub .AppImage versions list inside card */}
+              {versionPackages.length > 0 && (
+                <div className="card-versions-box mb-3">
+                  <div className="card-versions-header small fw-bold text-muted mb-1">
+                    All GitHub .AppImage Versions ({arch === "arm64" ? "arm64" : "x86_64"}):
+                  </div>
+                  <div className="card-versions-list">
+                    {versionPackages.map((vp) => {
+                      const vApp = vp.appimage;
+                      const fName =
+                        arch === "arm64" && vApp.arm64FileName
+                          ? vApp.arm64FileName
+                          : vApp.fileName;
+                      const isSelected = activeVersionEntry?.id === vp.id;
+                      return (
+                        <div
+                          key={vp.id}
+                          className={`card-version-item ${isSelected ? "selected" : ""}`}
+                          onClick={() => setSelectedVersionId(vp.id)}
+                          role="button"
+                          tabIndex={0}
+                          onKeyDown={(e) => {
+                            if (e.key === "Enter" || e.key === " ") setSelectedVersionId(vp.id);
+                          }}
+                        >
+                          <div className="card-version-info">
+                            <span className="card-version-tag">
+                              v{vp.version}
+                              {vp.isLatest ? " (Latest)" : vp.tagName ? ` (${vp.tagName})` : ""}
+                            </span>
+                            <code className="card-version-file">{fName}</code>
+                          </div>
+                          <div className="card-version-actions" onClick={(e) => e.stopPropagation()}>
+                            <button
+                              type="button"
+                              className="btn btn-xs btn-outline-primary"
+                              onClick={() => {
+                                setSelectedVersionId(vp.id);
+                                handleDownloadFile(vApp);
+                              }}
+                              title={`Download ${fName}`}
+                            >
+                              <FiDownload />
+                            </button>
+                            <button
+                              type="button"
+                              className="btn btn-xs btn-outline-secondary"
+                              onClick={() =>
+                                handleCopy(
+                                  `chmod +x ${fName} && ./${fName} --no-sandbox`,
+                                  `copy-appimage-${vp.id}`
+                                )
+                              }
+                              title={`Copy run command for ${fName}`}
+                            >
+                              {copiedId === `copy-appimage-${vp.id}` ? (
+                                <FiCheck className="text-success" />
+                              ) : (
+                                <FiCopy />
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+                </div>
               )}
 
               <div className="file-actions-row">
                 <button
                   className="btn btn-primary download-file-btn"
                   onClick={() => handleDownloadFile(appImageFile)}
-                  title={appImageFile.isAvailable ? "Download .AppImage package" : "Open latest GitHub release"}
+                  title="Download selected .AppImage package"
                 >
                   <FiDownload className="me-2" />
-                  {appImageFile.isAvailable ? "Download .AppImage" : "Check GitHub release"}
+                  Download v{version} .AppImage
                 </button>
 
                 <button
                   className="btn btn-outline-secondary copy-cmd-btn"
-                  onClick={() =>
+                  onClick={() => {
+                    const fName =
+                      arch === "arm64" && appImageFile.arm64FileName
+                        ? appImageFile.arm64FileName
+                        : appImageFile.fileName ||
+                          `go-seek-${version}-x86_64.AppImage`;
                     handleCopy(
-                      `chmod +x ${
-                        appImageFile.fileName ||
-                        "Fieldnote-Device-Report-0.1.0-x86_64.AppImage"
-                      } && ./${
-                        appImageFile.fileName ||
-                        "Fieldnote-Device-Report-0.1.0-x86_64.AppImage"
-                      }`,
+                      `chmod +x ${fName} && ./${fName} --no-sandbox`,
                       "copy-appimage-btn"
-                    )
-                  }
+                    );
+                  }}
                   title="Copy chmod and run command"
                 >
                   {copiedId === "copy-appimage-btn" ? (
@@ -476,9 +679,11 @@ export const UbuntuDownloadCenter = ({
               <div className="card-top-badge">
                 <span className="badge-chip source-chip">
                   <FiGithub className="me-1" />
-                  GitHub Source (.zip)
+                  GitHub Source (.zip) • v{version}
                 </span>
-                <span className="badge-chip branch-chip">main</span>
+                <span className="badge-chip branch-chip">
+                  {activeVersionEntry?.tagName || activeVersionEntry?.commitSha || "main"}
+                </span>
               </div>
 
               <div className="card-file-body">
@@ -490,7 +695,7 @@ export const UbuntuDownloadCenter = ({
                     Complete Desktop Source (.zip)
                   </h4>
                   <p className="file-filename mb-1">
-                    <code>{sourceFile.fileName || "DEEP_HARDWARE_SEEKER-main.zip"}</code>
+                    <code>{sourceFile.fileName || "Go-Seek-main.zip"}</code>
                   </p>
                   <p className="file-specs text-muted small mb-0">
                     Source: GitHub Archive • React + Electron IPC
@@ -498,19 +703,25 @@ export const UbuntuDownloadCenter = ({
                 </div>
               </div>
 
-              <p className="file-description small text-muted my-3">
-                Full source code fetched live from GitHub main branch. Includes
-                development launcher, build scripts, and native collector modules.
+              <p className="file-description small text-muted my-2">
+                Full source code archive for <strong>{activeVersionEntry?.label || `v${version}`}</strong>.
+                Includes development launcher, build scripts, and native collector modules.
               </p>
+
+              {activeVersionEntry?.notes && (
+                <div className="version-notes-box small text-muted mb-3">
+                  <strong>Release notes:</strong> {activeVersionEntry.notes}
+                </div>
+              )}
 
               <div className="file-actions-row">
                 <button
                   className="btn btn-outline-primary download-file-btn"
                   onClick={() => handleDownloadFile(sourceFile)}
-                  title="Download source code archive"
+                  title="Download source code archive for selected version"
                 >
                   <FiDownload className="me-2" />
-                  Download Source (.zip)
+                  Download v{version} Source (.zip)
                 </button>
 
                 {onGuideDownload && (
@@ -525,6 +736,179 @@ export const UbuntuDownloadCenter = ({
               </div>
             </div>
           </div>
+
+          {/* All GitHub Versions Matrix Table for dpkg (.deb) and .AppImage */}
+          {versionPackages.length > 0 && (
+            <div className="github-versions-catalog-box mb-4">
+              <div className="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-3">
+                <div className="d-flex align-items-center gap-2">
+                  <FiLayers className="text-primary fs-5" />
+                  <h4 className="guide-title mb-0">
+                    All GitHub Versions — dpkg (.deb) &amp; .AppImage Packages
+                  </h4>
+                </div>
+                <span className="badge-chip arch-chip">
+                  Showing {versionPackages.length} GitHub versions • Arch: {arch}
+                </span>
+              </div>
+
+              <div className="table-responsive">
+                <table className="table table-sm align-middle github-versions-table mb-0">
+                  <thead>
+                    <tr>
+                      <th>Version / GitHub Ref</th>
+                      <th>dpkg Package (.deb)</th>
+                      <th>Portable (.AppImage)</th>
+                      <th>Source / Release</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {versionPackages.map((vp) => {
+                      const debName =
+                        arch === "arm64" && vp.deb.arm64FileName
+                          ? vp.deb.arm64FileName
+                          : vp.deb.fileName;
+                      const appImageName =
+                        arch === "arm64" && vp.appimage.arm64FileName
+                          ? vp.appimage.arm64FileName
+                          : vp.appimage.fileName;
+                      const isSelected = activeVersionEntry?.id === vp.id;
+
+                      return (
+                        <tr
+                          key={vp.id}
+                          className={isSelected ? "active-version-row" : ""}
+                          onClick={() => setSelectedVersionId(vp.id)}
+                        >
+                          <td>
+                            <div className="d-flex align-items-center gap-2 flex-wrap">
+                              <strong className="version-row-title">
+                                v{vp.version}
+                              </strong>
+                              {vp.isLatest && (
+                                <span className="badge-chip source-chip">Latest</span>
+                              )}
+                              {vp.tagName && (
+                                <span className="badge-chip deb-chip">
+                                  tag: {vp.tagName}
+                                </span>
+                              )}
+                              {vp.commitSha && (
+                                <code className="small">{vp.commitSha}</code>
+                              )}
+                            </div>
+                            <div className="small text-muted mt-1">
+                              {vp.releaseTitle}
+                              {vp.date ? ` • ${timeAgo(vp.date)}` : ""}
+                            </div>
+                          </td>
+
+                          <td onClick={(e) => e.stopPropagation()}>
+                            <div className="mb-1">
+                              <code className="small">{debName}</code>
+                            </div>
+                            <div className="d-flex gap-1 flex-wrap">
+                              <button
+                                type="button"
+                                className="btn btn-xs btn-primary"
+                                onClick={() => {
+                                  setSelectedVersionId(vp.id);
+                                  handleDownloadFile(vp.deb);
+                                }}
+                              >
+                                <FiDownload className="me-1" /> .deb
+                              </button>
+                              <button
+                                type="button"
+                                className="btn btn-xs btn-outline-secondary"
+                                onClick={() =>
+                                  handleCopy(
+                                    `sudo dpkg -i ${debName}`,
+                                    `tbl-deb-${vp.id}`
+                                  )
+                                }
+                              >
+                                {copiedId === `tbl-deb-${vp.id}` ? (
+                                  <>
+                                    <FiCheck className="me-1 text-success" /> Copied
+                                  </>
+                                ) : (
+                                  <>
+                                    <FiCopy className="me-1" /> dpkg -i
+                                  </>
+                                )}
+                              </button>
+                            </div>
+                          </td>
+
+                          <td onClick={(e) => e.stopPropagation()}>
+                            <div className="mb-1">
+                              <code className="small">{appImageName}</code>
+                            </div>
+                            <div className="d-flex gap-1 flex-wrap">
+                              <button
+                                type="button"
+                                className="btn btn-xs btn-primary"
+                                onClick={() => {
+                                  setSelectedVersionId(vp.id);
+                                  handleDownloadFile(vp.appimage);
+                                }}
+                              >
+                                <FiDownload className="me-1" /> .AppImage
+                              </button>
+                              <button
+                                type="button"
+                                className="btn btn-xs btn-outline-secondary"
+                                onClick={() =>
+                                  handleCopy(
+                                    `chmod +x ${appImageName} && ./${appImageName} --no-sandbox`,
+                                    `tbl-app-${vp.id}`
+                                  )
+                                }
+                              >
+                                {copiedId === `tbl-app-${vp.id}` ? (
+                                  <>
+                                    <FiCheck className="me-1 text-success" /> Copied
+                                  </>
+                                ) : (
+                                  <>
+                                    <FiCopy className="me-1" /> Run cmd
+                                  </>
+                                )}
+                              </button>
+                            </div>
+                          </td>
+
+                          <td onClick={(e) => e.stopPropagation()}>
+                            <div className="d-flex gap-1 flex-wrap">
+                              <a
+                                href={vp.sourceZipUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn btn-xs btn-outline-primary"
+                                title="Download source .zip for this version"
+                              >
+                                <FiDownload className="me-1" /> Source .zip
+                              </a>
+                              <a
+                                href={vp.releaseUrl}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="btn btn-xs btn-outline-secondary"
+                                title="View release on GitHub"
+                              >
+                                <FiGithub className="me-1" /> Release
+                              </a>
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          )}
 
           {/* Installation Details Section */}
           <div className="installation-guide-box">
@@ -686,7 +1070,7 @@ export const UbuntuDownloadCenter = ({
                   <div className="step-content">
                     <h6 className="step-heading">Launch the Hardware Suite</h6>
                     <p className="small text-muted mb-2">
-                      Launch via the command line or search <strong>Fieldnote</strong> in
+                      Launch via the command line or search <strong>{productName}</strong> in
                       your Ubuntu Applications menu:
                     </p>
                     <div className="terminal-box">
@@ -699,7 +1083,7 @@ export const UbuntuDownloadCenter = ({
                           className="copy-term-btn"
                           onClick={() =>
                             handleCopy(
-                              "fieldnote-device-report",
+                              debFile.runCmd || "go-seek",
                               "cmd-launch"
                             )
                           }
@@ -717,7 +1101,8 @@ export const UbuntuDownloadCenter = ({
                       </div>
                       <pre className="terminal-code">
                         <code>
-                          <span className="cmd-prompt">$ </span>fieldnote-device-report
+                          <span className="cmd-prompt">$ </span>
+                          {debFile.runCmd || "go-seek"}
                         </code>
                       </pre>
                     </div>
@@ -728,13 +1113,13 @@ export const UbuntuDownloadCenter = ({
                 <div className="info-sub-box d-flex align-items-center justify-content-between flex-wrap gap-2 p-2 px-3">
                   <span className="small text-muted">
                     <FiInfo className="me-1" /> To uninstall at any time:{" "}
-                    <code>sudo dpkg -r systems.fieldnote.device-report</code>
+                    <code>{debFile.uninstallCmd || "sudo dpkg -r go-seek"}</code>
                   </span>
                   <button
                     className="btn btn-sm btn-link text-muted p-0"
                     onClick={() =>
                       handleCopy(
-                        "sudo dpkg -r systems.fieldnote.device-report",
+                        debFile.uninstallCmd || "sudo dpkg -r go-seek",
                         "cmd-uninstall"
                       )
                     }
@@ -933,7 +1318,7 @@ export const UbuntuDownloadCenter = ({
                           className="copy-term-btn"
                           onClick={() =>
                             handleCopy(
-                              `git clone ${repoUrl}.git\ncd DEEP_HARDWARE_SEEKER\nnpm install`,
+                              `git clone ${repoUrl}.git\ncd ${githubData?.repo || "Go-Seek"}\nnpm install`,
                               "cmd-clone"
                             )
                           }
@@ -945,7 +1330,7 @@ export const UbuntuDownloadCenter = ({
                         <code>
                           <span className="cmd-prompt">$ </span>git clone {repoUrl}.git
                           {"\n"}
-                          <span className="cmd-prompt">$ </span>cd DEEP_HARDWARE_SEEKER
+                          <span className="cmd-prompt">$ </span>cd {githubData?.repo || "Go-Seek"}
                           {"\n"}
                           <span className="cmd-prompt">$ </span>npm install
                         </code>
