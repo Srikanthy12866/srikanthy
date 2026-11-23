@@ -44,6 +44,7 @@ import { SideNav } from "../../components/SideNav/SideNav";
 import { RightActionDock } from "../../components/RightActionDock/RightActionDock";
 import { UbuntuDownloadCenter } from "../../components/UbuntuDownloadCenter/UbuntuDownloadCenter";
 import { EcosystemDiagnostics } from "../../components/EcosystemDiagnostics/EcosystemDiagnostics";
+import { TicketTracker } from "../../components/TicketTracker/TicketTracker";
 import { pingMicroservices } from "../../utils/healthCheck";
 import { Container, Row, Col, Alert, Modal, Button } from "react-bootstrap";
 
@@ -275,6 +276,7 @@ export const Home = () => {
         <section id="telemetry" className="section-padding telemetry-section pt-0">
           <Container>
             <EcosystemDiagnostics />
+            <TicketTracker />
           </Container>
         </section>
 
