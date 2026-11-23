@@ -151,12 +151,16 @@ const dataportfolio = products.map((p) => ({
 
 // Backend API configuration for Contact & Tickets (Microservice deployed on Render)
 const BACKEND_BASE_URL = import.meta.env.VITE_BACKEND_URL || "https://go-seek-backend.onrender.com";
+const AUTH_BASE_URL = import.meta.env.VITE_AUTH_URL || "https://auth-service-v3f4.onrender.com";
 
 const contactConfig = {
     YOUR_EMAIL: "srikanthy12866@gmail.com",
     description: "Feel free to reach out for collaborations, architecture discussions, or enterprise projects. Powered directly by our secure Spring Boot backend microservice.",
+    backendBaseUrl: BACKEND_BASE_URL,
+    authEndpoint: `${AUTH_BASE_URL}/api/auth/login`,
     apiEndpoint: `${BACKEND_BASE_URL}/api/contact`,
     ticketEndpoint: `${BACKEND_BASE_URL}/api/tickets`,
+    myTicketsEndpoint: `${BACKEND_BASE_URL}/api/tickets/my`,
 };
 
 const socialprofils = {
