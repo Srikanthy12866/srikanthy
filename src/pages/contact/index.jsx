@@ -193,15 +193,6 @@ export const ContactUs = () => {
               Reach out for engineering inquiries, architecture consultations, or submit a technical issue ticket for Go-Seek or this portfolio.
             </p>
             <hr className="t_border my-4 ml-0 text-left" />
-            <div className="d-flex align-items-center gap-3 microservice-status-bar mb-3">
-              <span className="small text-muted d-flex align-items-center">
-                <FiActivity className="me-1 text-primary" /> Service Status:
-              </span>
-              <span className={`badge ${systemStatus.backend === "online" && systemStatus.auth === "online" ? "bg-success" : "bg-warning text-dark"} d-inline-flex align-items-center`}>
-                <span className="status-dot me-1">●</span>
-                {systemStatus.backend === "online" && systemStatus.auth === "online" ? "All Systems Operational" : "Connecting..."}
-              </span>
-            </div>
           </Col>
         </Row>
 

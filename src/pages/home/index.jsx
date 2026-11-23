@@ -43,7 +43,6 @@ import { triggerResumeDownload } from "../../utils/getResume";
 import { SideNav } from "../../components/SideNav/SideNav";
 import { RightActionDock } from "../../components/RightActionDock/RightActionDock";
 import { UbuntuDownloadCenter } from "../../components/UbuntuDownloadCenter/UbuntuDownloadCenter";
-import { EcosystemDiagnostics } from "../../components/EcosystemDiagnostics/EcosystemDiagnostics";
 import { TicketTracker } from "../../components/TicketTracker/TicketTracker";
 import { pingMicroservices } from "../../utils/healthCheck";
 import { Container, Row, Col, Alert, Modal, Button } from "react-bootstrap";
@@ -271,11 +270,10 @@ export const Home = () => {
         </section>
 
         {/* ========================================================
-            ECOSYSTEM TELEMETRY SECTION
+            CUSTOMER SUPPORT & ISSUE TRACKING SECTION
         ======================================================== */}
-        <section id="telemetry" className="section-padding telemetry-section pt-0">
+        <section id="support" className="section-padding support-section pt-0">
           <Container>
-            <EcosystemDiagnostics />
             <TicketTracker />
           </Container>
         </section>
@@ -631,21 +629,6 @@ export const Home = () => {
               <p className="section-subheading">
                 Reach out for engineering consultations, hire me for full-stack contracts, or submit a technical issue ticket.
               </p>
-
-              {/* Real-Time Service Status Bar */}
-              <div className="d-flex align-items-center gap-3 microservice-status-bar mt-3">
-                <span className="small text-muted d-flex align-items-center">
-                  <FiActivity className="me-1 text-primary" /> Service Status:
-                </span>
-                <span
-                  className={`badge ${
-                    systemStatus.backend === "online" && systemStatus.auth === "online" ? "bg-success" : "bg-warning text-dark"
-                  } d-inline-flex align-items-center`}
-                >
-                  <span className="status-dot me-1">●</span>
-                  {systemStatus.backend === "online" && systemStatus.auth === "online" ? "All Systems Operational" : "Connecting..."}
-                </span>
-              </div>
             </div>
 
             <Row className="g-4">
