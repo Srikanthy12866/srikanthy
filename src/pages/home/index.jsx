@@ -43,6 +43,7 @@ import { triggerResumeDownload } from "../../utils/getResume";
 import { SideNav } from "../../components/SideNav/SideNav";
 import { RightActionDock } from "../../components/RightActionDock/RightActionDock";
 import { UbuntuDownloadCenter } from "../../components/UbuntuDownloadCenter/UbuntuDownloadCenter";
+import { EcosystemDiagnostics } from "../../components/EcosystemDiagnostics/EcosystemDiagnostics";
 import { pingMicroservices } from "../../utils/healthCheck";
 import { Container, Row, Col, Alert, Modal, Button } from "react-bootstrap";
 
@@ -265,6 +266,15 @@ export const Home = () => {
                 </div>
               </Col>
             </Row>
+          </Container>
+        </section>
+
+        {/* ========================================================
+            ECOSYSTEM TELEMETRY SECTION
+        ======================================================== */}
+        <section id="telemetry" className="section-padding telemetry-section pt-0">
+          <Container>
+            <EcosystemDiagnostics />
           </Container>
         </section>
 

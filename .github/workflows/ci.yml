@@ -1,0 +1,36 @@
+name: Portfolio Website CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-verify:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout Repository
+      uses: actions/checkout@v4
+
+    - name: Set up Node.js 20
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20
+        cache: 'npm'
+
+    - name: Install Dependencies
+      run: npm ci
+
+    - name: Build Production Web Bundle
+      run: npm run build
+
+    - name: Security Check - Verify No Public Source Maps
+      run: |
+        MAP_COUNT=$(find dist/ -name "*.map" 2>/dev/null | wc -l)
+        if [ "$MAP_COUNT" -gt 0 ]; then
+          echo "Security Failure: Found $MAP_COUNT exposed .map files in production web build!"
+          exit 1
+        fi
+        echo "Security Passed: Zero source map files found in production web bundle."
