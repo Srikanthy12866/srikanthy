@@ -1,4 +1,4 @@
-name: Portfolio Website CI
+name: Portfolio Website CI & Pages Deploy
 
 on:
   push:
@@ -6,8 +6,11 @@ on:
   pull_request:
     branches: [ main ]
 
+permissions:
+  contents: write
+
 jobs:
-  build-and-verify:
+  build-and-deploy:
     runs-on: ubuntu-latest
 
     steps:
@@ -34,3 +37,10 @@ jobs:
           exit 1
         fi
         echo "Security Passed: Zero source map files found in production web bundle."
+
+    - name: Deploy to GitHub Pages
+      if: github.ref == 'refs/heads/main'
+      uses: peaceiris/actions-gh-pages@v4
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: ./dist

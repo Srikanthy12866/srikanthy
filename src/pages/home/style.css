@@ -578,11 +578,6 @@
    CONTACT & SUPPORT TICKETS (#contact)
    ========================================================================== */
 
-.microservice-status-bar {
-    display: flex;
-    flex-wrap: wrap;
-}
-
 .contact-info-list {
     display: flex;
     flex-direction: column;
